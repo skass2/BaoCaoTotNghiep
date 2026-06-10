@@ -1,0 +1,426 @@
+\phulucchapter{Cấu trúc mã nguồn chính}
+
+Phụ lục này chỉ liệt kê các nhóm mã nguồn trực tiếp phục vụ triển khai
+và kiểm thử hệ thống. Các file cấu hình phụ hoặc tài nguyên giao diện
+nhỏ được lược bỏ để tránh làm tài liệu quá dài.
+
+\begin{longtable}[]{|
+		>{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3738}}|
+		>{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.6262}}|}
+	\caption{Cấu trúc mã nguồn chính}\\
+	\hline
+	\begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{File/Nhóm file}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Vai trò}
+	\end{minipage} \\
+	\hline
+	\endfirsthead
+	\continuedcaption{Cấu trúc mã nguồn chính}
+	\hline
+	\begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{File/Nhóm file}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Vai trò}
+	\end{minipage} \\
+	\hline
+	\endhead
+	\hline
+	\endlastfoot
+	\codepath{backend/main.py} & Khởi tạo FastAPI, Firebase, CORS, router và
+	ChromaDB. \\
+	\hline
+	\codepath{backend/rag/config.py} & Cấu hình mô hình chính, mô hình dự phòng và tham
+	số RAG. \\
+	\hline
+	\codepath{backend/rag/loader.py} & Đọc dữ liệu thủ tục từ procedures.json. \\
+	\hline
+	\codepath{backend/rag/chunker.py} & Chia thủ tục thành các semantic chunk gắn
+	metadata. \\
+	\hline
+	\codepath{backend/rag/normalizer.py} & Chuẩn hóa từ đồng nghĩa trong câu hỏi. \\
+	\hline
+	\codepath{backend/rag/intent.py} & Xử lý intent xã giao, câu hỏi chung và ngoài
+	phạm vi. \\
+	\hline
+	\codepath{backend/rag/pipeline.py} & Điều phối rewrite, retrieval, rerank và
+	generate. \\
+	\hline
+	\codepath{backend/rag/vectorstore.py} & Build/load ChromaDB và embedding. \\
+	\hline
+	\codepath{backend/rag/memory.py} & Đọc, ghi lịch sử chat trong Firestore. \\
+	\hline
+	\codepath{backend/routers/auth.py} & Xác thực Firebase token, OTP và quyền
+	admin. \\
+	\hline
+	\codepath{backend/routers/user.py} & API chat, session và lịch sử hội thoại. \\
+	\hline
+	\codepath{backend/routers/admin.py} & API thống kê, quản lý tài liệu, backup và
+	reload VectorDB. \\
+	\hline
+	\codepath{frontend/App.tsx} & Điều phối đăng nhập, chatbot và trang quản trị. \\
+	\hline
+	\codepath{frontend/ChatBox.tsx} & Giao diện hội thoại chính. \\
+	\hline
+	\codepath{frontend/LoginPage.tsx} & Giao diện đăng nhập, đăng ký và OTP. \\
+	\hline
+	\codepath{frontend/Sidebar.tsx} & Danh sách phiên hội thoại. \\
+	\hline
+	\codepath{frontend/AdminDashboard.tsx} & Trang quản trị hệ thống. \\
+	\hline
+	\codepath{frontend/firebase.ts} & Cấu hình Firebase client. \\
+	\hline
+\end{longtable}
+
+\phulucchapter{Lệnh chạy hệ thống}
+
+\begin{longtable}[]{|
+		>{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.4848}}|
+		>{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5152}}|}
+	\caption{Lệnh chạy hệ thống}\\
+	\hline
+	\begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Mục đích}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Lệnh}
+	\end{minipage} \\
+	\hline
+	\endfirsthead
+	\continuedcaption{Lệnh chạy hệ thống}
+	\hline
+	\begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Mục đích}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Lệnh}
+	\end{minipage} \\
+	\hline
+	\endhead
+	\hline
+	\endlastfoot
+	Khởi chạy backend & py -m uvicorn main:app -\/-reload -\/-port 8000 \\
+	\hline
+	Cài thư viện frontend & npm install \\
+	\hline
+	Chạy frontend ở chế độ phát triển & npm run dev \\
+	\hline
+	Build frontend & npm run build \\
+	\hline
+	Mở backend local qua tunnel & ngrok http 8000 \\
+	\hline
+\end{longtable}
+
+\phulucchapter{Thống kê dữ liệu thử nghiệm}
+
+\begin{longtable}[]{|
+		>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2726}}|
+		>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1392}}|
+		>{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5882}}|}
+	\caption{Thống kê dữ liệu thử nghiệm}\\
+	\hline
+	\begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Loại dữ liệu}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Số lượng}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Vai trò}
+	\end{minipage} \\
+	\hline
+	\endfirsthead
+	\continuedcaption{Thống kê dữ liệu thử nghiệm}
+	\hline
+	\begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Loại dữ liệu}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Số lượng}
+	\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+		\textbf{Vai trò}
+	\end{minipage} \\
+	\hline
+	\endhead
+	\hline
+	\endlastfoot
+	Thủ tục hành chính & 1950 & Dữ liệu gốc phục vụ chatbot RAG. \\
+	\hline
+	Thực thể tên thủ tục & 1950 & Nhận diện tên thủ tục và biến thể từ
+	khóa. \\
+	\hline
+	Mã thủ tục Lai Châu & 1950 & Ánh xạ mã thủ tục với id định danh. \\
+	\hline
+	Intent hội thoại & 19 & Xử lý chào hỏi, cảm ơn, câu hỏi chung và ngoài
+	phạm vi. \\
+	\hline
+	Nhóm synonym & 10 & Chuẩn hóa ý định hỏi về phí, hồ sơ, thời hạn, cơ
+	quan, pháp lý. \\
+	\hline
+\end{longtable}
+
+
+\phulucchapter{Bộ 100 câu hỏi kiểm thử và kết quả hiệu năng}
+
+Bảng D.1 trình bày quy ước chấm điểm hiệu năng. Bảng D.2 gộp bộ câu hỏi và kết quả chạy test để giảm trùng lặp nội dung. Cột ``Điểm đúng'' đánh giá độ khớp câu trả lời với dữ liệu nguồn; cột ``Điểm thời gian'' phản ánh tốc độ phản hồi; cột ``Tổng điểm'' là tổng hai thành phần này.
+
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.18\textwidth}|>{\raggedright\arraybackslash}p{0.38\textwidth}|>{\raggedright\arraybackslash}p{0.38\textwidth}|}
+	\caption{Quy ước chấm điểm hiệu năng}\\
+	\hline
+	\textbf{Tiêu chí} & \textbf{Quy ước điểm} & \textbf{Ghi chú}\\
+	\hline
+	\endfirsthead
+	\continuedcaption{Quy ước chấm điểm hiệu năng}
+	\hline
+	\textbf{Tiêu chí} & \textbf{Quy ước điểm} & \textbf{Ghi chú}\\
+	\hline
+	\endhead
+	\hline
+	\endlastfoot
+	Điểm đúng & Đúng/Từ chối đúng = 1; Đúng nhưng thiếu ý = 0,5; Sai/thiếu ý = 0 & Đánh giá thủ công theo dữ liệu nguồn.\\
+	\hline
+	Điểm thời gian & <= 8.000 ms = 1; > 8.000 đến <= 16.000 ms = 0,5; > 16.000 ms = 0 & Ngưỡng dùng cho môi trường thử nghiệm.\\
+	\hline
+	Tổng điểm & Tổng điểm = Điểm đúng + Điểm thời gian & Điểm tối đa mỗi test là 2.\\
+	\hline
+\end{longtable}
+
+% Phụ lục D dùng khổ giấy dọc. Bảng nhiều chữ được co cỡ chữ và chia lại độ rộng cột.
+% Các cột có nhiều nội dung như "Kỳ vọng" và "Kết quả chatbot" được ưu tiên rộng hơn.
+% ===== Bảng D.2 - sinh lại từ file bảng test(2).docx; chỉ sửa riêng bảng D.2 =====
+% Bảng giữ khổ giấy A4 dọc, cỡ chữ 10pt; cột nhiều chữ được ưu tiên chiều rộng.
+\begingroup
+\fontsize{10pt}{12pt}\selectfont
+\renewcommand{\arraystretch}{1.18}
+% Căn theo thước Word/A4 dọc: tổng bảng xấp xỉ \textwidth, ưu tiên hai cột nhiều chữ.
+% Hàng tiêu đề căn giữa; các ô dữ liệu căn trái-trên, không căn giữa theo chiều dọc.
+\setlength{\tabcolsep}{0.75pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\begin{longtable}{|>{\RaggedRight\arraybackslash}p{0.95cm}|>{\RaggedRight\arraybackslash}p{1.05cm}|>{\RaggedRight\arraybackslash}p{1.75cm}|>{\RaggedRight\arraybackslash}p{1.60cm}|>{\RaggedRight\arraybackslash}p{3.85cm}|>{\RaggedRight\arraybackslash}p{4.20cm}|>{\RaggedRight\arraybackslash}p{0.75cm}|>{\RaggedRight\arraybackslash}p{1.25cm}|}
+	\caption{Bộ 100 câu hỏi kiểm thử và kết quả đánh giá}\\
+	\hline
+	\multicolumn{1}{|>{\centering\arraybackslash}m{0.95cm}|}{\textbf{Mã}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.05cm}|}{\textbf{Nhóm}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.75cm}|}{\makecell[c]{\textbf{Câu}\\\textbf{hỏi}}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.60cm}|}{\makecell[c]{\textbf{TTHC/}\\\textbf{Trường}}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{3.85cm}|}{\textbf{Kỳ vọng}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{4.20cm}|}{\makecell[c]{\textbf{Kết quả}\\\textbf{chatbot}}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{0.75cm}|}{\textbf{ĐG}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.25cm}|}{\makecell[c]{\textbf{TG}\\\textbf{(ms)}}}\\
+	\hline
+	\endfirsthead
+	\continuedcaption{Bộ 100 câu hỏi kiểm thử và kết quả đánh giá}
+	\hline
+	\multicolumn{1}{|>{\centering\arraybackslash}m{0.95cm}|}{\textbf{Mã}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.05cm}|}{\textbf{Nhóm}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.75cm}|}{\makecell[c]{\textbf{Câu}\\\textbf{hỏi}}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.60cm}|}{\makecell[c]{\textbf{TTHC/}\\\textbf{Trường}}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{3.85cm}|}{\textbf{Kỳ vọng}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{4.20cm}|}{\makecell[c]{\textbf{Kết quả}\\\textbf{chatbot}}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{0.75cm}|}{\textbf{ĐG}} &
+	\multicolumn{1}{>{\centering\arraybackslash}m{1.25cm}|}{\makecell[c]{\textbf{TG}\\\textbf{(ms)}}}\\
+	\hline
+	\endhead
+	\hline
+	\endlastfoot
+	\makecell[lt]{TC\\001} & \hspace{0pt}HS & \hspace{0pt}TTHC01 cần hồ sơ gì? & \makecell[lt]{TTHC01\\/HS} & \hspace{0pt}-\allowbreak{} Bản khai của đại diện thân nhân (kèm biên bản ủy quyền) hoặc người tổ chức mai táng (Mẫu TT1 Thông tư số 05/\allowbreak{}2013/\allowbreak{}TT-\allowbreak{}BLĐTBXH);\allowbreak{} -\allowbreak{} Giấy chứng tử;\allowbreak{} -\allowbreak{} Hồ sơ của ngư.\allowbreak{}.\allowbreak{}.\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0) & \hspace{0pt}để TTHC01,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} -\allowbreak{} Bản khai của đại diện thân nhân (kèm biên bản ủy quyền) hoặc người tổ chức mai táng (Mẫu TT1 Thông tư số 05/\allowbreak{}2013/\allowbreak{}TT-\allowbreak{}BLĐTBXH) SL:\allowbreak{} 01 bản chính -\allowbreak{} Giấy chứng tử SL:\allowbreak{} 01 bản chính -\allowbreak{} Hồ sơ của người có công vớ.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}13115\\
+	\hline
+	\makecell[lt]{TC\\002} & \hspace{0pt}HS & \hspace{0pt}TTHC02 cần hồ sơ gì? & \makecell[lt]{TTHC02\\/HS} & \hspace{0pt}Giấy đề nghị TTHC02 theo mẫu (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} Giấy chứng nhận đăng ký xe ô tô hoặc giấy hẹn nhận giấy chứng nhận đăng ký xe ô tô của cơ quan có thẩm quyền cấp giấy chứng nhận đăng ký xe ô tô (BS hoặc b.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}để TTHC02,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} 1.\allowbreak{} Giấy đề nghị TTHC02 theo mẫu SL:\allowbreak{} 1 BC 2.\allowbreak{} Phương án khai thác tuyến vận tải hành khách cố định giữa Việt Nam,\allowbreak{} Lào và Campuchia theo mẫu SL:\allowbreak{} 1 BC 3.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}15249\\
+	\hline
+	\makecell[lt]{TC\\003} & \hspace{0pt}HS & \hspace{0pt}TTHC03 cần hồ sơ gì? & \makecell[lt]{TTHC03\\/HS} & \hspace{0pt}Thành phần hồ sơ gồm:\allowbreak{} Tờ khai đề nghị hỗ trợ chi phí mai táng (theo Mẫu số 02 ban hành kèm theo Nghị định số 176/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP).\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0) & \hspace{0pt}Để được TTHC03,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} 1.\allowbreak{} Tờ khai đề nghị hỗ trợ chi phí mai táng (theo Mẫu số 02 ban hành kèm theo Nghị định số 176/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP).\allowbreak{} SL:\allowbreak{} 1 bản chính.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}32779\\
+	\hline
+	\makecell[lt]{TC\\004} & \hspace{0pt}HS & \hspace{0pt}TTHC04 cần hồ sơ gì? & \makecell[lt]{TTHC04\\/HS} & \hspace{0pt}-\allowbreak{} Đơn đề nghị theo mẫu;\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} -\allowbreak{} Biên bản hoàn thành thu hồi báo hiệu,\allowbreak{} thiết bị neo đậu;\allowbreak{} biên bản hoàn thành rà quét vật chướng ngại trong vùng nước khu neo đậu.\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0) & \hspace{0pt}Để thực hiện thủ tục TTHC04,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} 1.\allowbreak{} Đơn đề nghị theo mẫu SL:\allowbreak{} 1 BC 2.\allowbreak{} Biên bản hoàn thành thu hồi báo hiệu,\allowbreak{} thiết bị neo đậu;\allowbreak{} biên bản hoàn thành rà quét vật chướng ngại trong vùng nước khu neo đậu SL:\allowbreak{} 1 BC & \hspace{0pt}Đ & \hspace{0pt}14271\\
+	\hline
+	\makecell[lt]{TC\\005} & \hspace{0pt}HS & \hspace{0pt}TTHC05 cần hồ sơ gì? & \makecell[lt]{TTHC05\\/HS} & \hspace{0pt}+ Tên nhà đầu tư lập hồ sơ đề xuất dự án;\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} + Thời hạn,\allowbreak{} địa điểm nộp hồ sơ đề xuất dự án;\allowbreak{} cơ quan,\allowbreak{} đơn vị tiếp nhận hồ sơ của nhà đầu tư;\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0).\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Để thực hiện thủ tục TTHC05,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} -\allowbreak{} Quy định về trách nhiệm của nhà đầu tư chịu mọi chi phí,\allowbreak{} rủi ro trong trường hợp hồ sơ đề xuất dự án không được chấp thuận và nguyên tắc xử lý trong trường hợp nhà đầu tư đề xuất dự án.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}18888\\
+	\hline
+	\makecell[lt]{TC\\006} & \hspace{0pt}HS & \hspace{0pt}TTHC06 cần hồ sơ gì? & \makecell[lt]{TTHC06\\/HS} & \hspace{0pt}-\allowbreak{} BS văn bản chấp thuận chủ trương đầu tư hoặc quyết định chủ trương đầu tư hoặc quyết định phê duyệt dự án đầu tư theo QĐ của pháp luật về đầu tư,\allowbreak{} đ.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}để thực hiện thủ tục TTHC06,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} -\allowbreak{} Văn bản cam kết thực hiện nghĩa vụ trồng rừng thay thế đối với diện tích đề nghị chuyển mục đích sử dụng rừng sang mục đích khác.\allowbreak{} -\allowbreak{} SL:\allowbreak{} 1 bản chính & \hspace{0pt}ĐT & \hspace{0pt}15453\\
+	\hline
+	\makecell[lt]{TC\\007} & \hspace{0pt}HS & \hspace{0pt}TTHC07 cần hồ sơ gì? & \makecell[lt]{TTHC07\\/HS} & \hspace{0pt}-\allowbreak{} Văn bản đề cử hoặc tự ứng cử;\allowbreak{} (BC:\allowbreak{} 0 BS:\allowbreak{} 0);\allowbreak{} -\allowbreak{} Lý lịch khoa học (trong đó nêu rõ năng lực chuyên môn,\allowbreak{} kinh nghiệm,\allowbreak{} thành tích nổi bật) của ứng viên;\allowbreak{} (BC:\allowbreak{} 0 BS:\allowbreak{} 0).\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về vấn đề này.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}13008\\
+	\hline
+	\makecell[lt]{TC\\008} & \hspace{0pt}HS & \hspace{0pt}TTHC08 cần hồ sơ gì? & \makecell[lt]{TTHC08\\/HS} & \hspace{0pt}-\allowbreak{} Đơn đăng ký sửa đổi,\allowbreak{} bổ sung nội dung chương trình khuyến mại theo mẫu quy định.\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0) & \hspace{0pt}để TTHC08,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} Đơn đăng ký sửa đổi,\allowbreak{} bổ sung nội dung chương trình khuyến mại theo mẫu quy định (Mẫu số 061.\allowbreak{}docx).\allowbreak{} SL:\allowbreak{} 1 BC.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}13262\\
+	\hline
+	\makecell[lt]{TC\\009} & \hspace{0pt}HS & \hspace{0pt}TTHC09 cần hồ sơ gì? & \makecell[lt]{TTHC09\\/HS} & \hspace{0pt}Giấy đề nghị đăng ký thay đổi nội dung đăng ký hộ kinh doanh;\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} BS văn bản ủy quyền của các thành viên hộ gia đình cho một thành viên làm chủ hộ kinh doanh.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Để cấp lại Giấy chứng nhận đăng ký hộ kinh doanh hoặc cấp đổi sang Giấy chứng nhận đăng ký hộ kinh doanh,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} 1.\allowbreak{} Giấy đề nghị đăng ký thay đổi nội dung đăng ký hộ kinh doanh (Biểu mẫu:\allowbreak{} MAUSO21.\allowbreak{}DOC) SL:\allowbreak{} 1 bản chính 2.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}13055\\
+	\hline
+	\makecell[lt]{TC\\010} & \hspace{0pt}HS & \hspace{0pt}TTHC10 cần hồ sơ gì? & \makecell[lt]{TTHC10\\/HS} & \hspace{0pt}-\allowbreak{} Văn bản xác nhận hoàn cảnh gia đình,\allowbreak{} tình trạng chỗ ở,\allowbreak{} điều kiện kinh tế do UBND cấp xã nơi người nhận con nuôi thường trú cấp có giá trị sử dụng nếu được cấp.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Để thực hiện thủ tục TTHC10,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} 1.\allowbreak{} Đơn xin nhận con nuôi;\allowbreak{} SL:\allowbreak{} BC:\allowbreak{} 1 BS:\allowbreak{} 0 & \hspace{0pt}ĐT & \hspace{0pt}11157\\
+	\hline
+	\makecell[lt]{TC\\011} & \hspace{0pt}HS & \hspace{0pt}TTHC11 cần hồ sơ gì? & \makecell[lt]{TTHC11\\/HS} & \hspace{0pt}-\allowbreak{} Từ lần đề nghị cấp C/\allowbreak{}O tiếp theo,\allowbreak{} hồ sơ chỉ cần chứng từ theo QĐ từ điểm a đến điểm đ,\allowbreak{} mục 2.\allowbreak{}1.\allowbreak{} Các chứng từ trong hồ sơ đề nghị cấp C/\allowbreak{}O nêu tại các điể.\allowbreak{}.\allowbreak{}.\allowbreak{} (BC:\allowbreak{} 0 BS:\allowbreak{} 0);\allowbreak{} 2.\allowbreak{}3.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Để TTHC11,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} 1.\allowbreak{} Danh mục các cơ sở sản xuất của thương nhân (Mẫu số 02 quy định tại Phụ lục ban hành kèm theo Nghị định số 31/\allowbreak{}2018/\allowbreak{}NĐ-\allowbreak{}CP) BC:\allowbreak{} 1 BS:\allowbreak{} 0 2.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}ĐT & \hspace{0pt}20128\\
+	\hline
+	\makecell[lt]{TC\\012} & \hspace{0pt}HS & \hspace{0pt}TTHC12 cần hồ sơ gì? & \makecell[lt]{TTHC12\\/HS} & \hspace{0pt}Đăng ký khai thác tuyến theo mẫu (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} BS hoặc bản sao có chứng thực hoặc bản sao điện tử được chứng thực từ bản chính hoặc bản sao điện tử từ sổ gốc hoặc bản chính văn bản trao đổi thống nhất g.\allowbreak{}.\allowbreak{}.\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 1) & \hspace{0pt}Để TTHC12,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} 1.\allowbreak{} Đăng ký khai thác tuyến theo mẫu SL:\allowbreak{} 1 bản chính 2.\allowbreak{} BS hoặc bản sao có chứng thực hoặc bản sao điện tử được chứng thực từ bản chính hoặc bản sao điện tử từ sổ gốc hoặc bản chính văn bản trao đổi thống n.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}14536\\
+	\hline
+	\makecell[lt]{TC\\013} & \hspace{0pt}HS & \hspace{0pt}TTHC13 cần hồ sơ gì? & \makecell[lt]{TTHC13\\/HS} & \hspace{0pt}-\allowbreak{} Giấy chứng nhận đăng ký xe ô tô (xuất trình);\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0) & \hspace{0pt}Để thực hiện thủ tục TTHC13,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} Giấy chứng nhận đăng ký xe ô tô (xuất trình) SL:\allowbreak{} 1 BC,\allowbreak{} 0 BS & \hspace{0pt}Đ & \hspace{0pt}17925\\
+	\hline
+	\makecell[lt]{TC\\014} & \hspace{0pt}HS & \hspace{0pt}TTHC14 cần hồ sơ gì? & \makecell[lt]{TTHC14\\/HS} & \hspace{0pt}01 Thể lệ chương trình khuyến mại theo mẫu quy định;\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} -\allowbreak{} Mẫu bằng chứng xác định trúng thưởng hoặc mô tả chi tiết về bằng chứng xác định trúng thưởng;\allowbreak{} (BC:\allowbreak{} 1 BS:\allowbreak{} 0).\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Để thực hiện thủ tục TTHC14,\allowbreak{} bạn cần chuẩn bị hồ sơ gồm các giấy tờ sau:\allowbreak{} -\allowbreak{} Đăng ký thực hiện chương trình khuyến mại theo mẫu quy định SL:\allowbreak{} 1 bản chính -\allowbreak{} Thể lệ chương trình khuyến mại theo mẫu quy định SL:\allowbreak{} 1 bản chính -\allowbreak{} Mẫu bằng chứng xác định trúng.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}12580\\
+	\hline
+	\makecell[lt]{TC\\015} & \hspace{0pt}HS & \hspace{0pt}TTHC15 cần hồ sơ gì? & \makecell[lt]{TTHC15\\/HS} & \hspace{0pt}Giấy đề nghị đăng ký doanh nghiệp (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} Điều lệ công ty (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} Cam kết thực hiện mục tiêu xã hội,\allowbreak{} môi trường có chữ ký của những người sau đây:\allowbreak{} cổ đông sáng lập là cá nhân,\allowbreak{} cổ đông khác là cá nhân.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Để TTHC15,\allowbreak{} bạn cần chuẩn bị các giấy tờ sau:\allowbreak{} -\allowbreak{} Giấy đề nghị đăng ký doanh nghiệp -\allowbreak{} SL:\allowbreak{} 1 bản chính -\allowbreak{} Điều lệ công ty -\allowbreak{} SL:\allowbreak{} 1 bản chính & \hspace{0pt}ĐT & \hspace{0pt}8558\\
+	\hline
+	\makecell[lt]{TC\\016} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC01 là bao lâu? & \makecell[lt]{TTHC01\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 16 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 16 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC01 là 16 Ngày làm việc.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}12256\\
+	\hline
+	\makecell[lt]{TC\\017} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC02 là bao lâu? & \makecell[lt]{TTHC02\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 02 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 02 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC02 là 02 ngày làm việc.\allowbreak{} Thời hạn này áp dụng cho cả hình thức nộp hồ sơ trực tiếp và qua dịch vụ bưu chính.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}20433\\
+	\hline
+	\makecell[lt]{TC\\018} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC03 là bao lâu? & \makecell[lt]{TTHC03\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 3 Ngày làm việc;\allowbreak{} Trực tuyến:\allowbreak{} 3 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 3 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC03 là 03 (ba) ngày làm việc,\allowbreak{} kể từ ngày cơ quan nhận đủ hồ sơ.\allowbreak{} & \hspace{0pt}ĐT & \hspace{0pt}11989\\
+	\hline
+	\makecell[lt]{TC\\019} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC04 là bao lâu? & \makecell[lt]{TTHC04\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 5 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 5 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC04 là 5 Ngày làm việc.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}8401\\
+	\hline
+	\makecell[lt]{TC\\020} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC05 là bao lâu? & \makecell[lt]{TTHC05\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 05 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 05 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC05 là 05 ngày làm việc.\allowbreak{} Thời hạn này được tính kể từ ngày cơ quan có thẩm quyền nhận được văn bản đề xuất thực hiện dự án của nhà đầu tư.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}12753\\
+	\hline
+	\makecell[lt]{TC\\021} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC06 là bao lâu? & \makecell[lt]{TTHC06\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} -\allowbreak{} Hội đồng nhân dân cấp tỉnh xem xét,\allowbreak{} quyết định điều chỉnh chủ trương chuyển mục đích sử.\allowbreak{}.\allowbreak{}.\allowbreak{};\allowbreak{} Trực tuyến:\allowbreak{} -\allowbreak{} Hội đồng nhân dân cấp tỉnh xem xét,\allowbreak{} quyết định điều chỉnh chủ trương chuyển mục đích sử.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC06 được quy định như sau:\allowbreak{} -\allowbreak{} Trong trường hợp thông thường:\allowbreak{} Hội đồng nhân dân cấp tỉnh xem xét,\allowbreak{} quyết định điều chỉnh chủ trương chuyển mục đích sử dụng rừng sang mục đích khác trong 35 ngày.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}18168\\
+	\hline
+	\makecell[lt]{TC\\022} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC07 là bao lâu? & \makecell[lt]{TTHC07\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} Không có thông tin trong dữ liệu nguồn.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về vấn đề này.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}13543\\
+	\hline
+	\makecell[lt]{TC\\023} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC08 là bao lâu? & \makecell[lt]{TTHC08\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 5 Ngày làm việc;\allowbreak{} Trực tuyến:\allowbreak{} 5 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 5 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC08 là 5 ngày làm việc.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}16838\\
+	\hline
+	\makecell[lt]{TC\\024} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC09 là bao lâu? & \makecell[lt]{TTHC09\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 3 Ngày làm việc;\allowbreak{} Trực tuyến:\allowbreak{} 3 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 3 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC09 là 3 ngày làm việc.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}12432\\
+	\hline
+	\makecell[lt]{TC\\025} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC10 là bao lâu? & \makecell[lt]{TTHC10\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} Theo mô tả;\allowbreak{} Trực tuyến:\allowbreak{} Theo mô tả;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} Theo mô tả & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về thời hạn giải quyết thủ tục TTHC10.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}10427\\
+	\hline
+	\makecell[lt]{TC\\026} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC11 là bao lâu? & \makecell[lt]{TTHC11\\/TH} & \hspace{0pt}Trực tuyến:\allowbreak{} 6 Giờ;\allowbreak{} Trực tiếp:\allowbreak{} 8 Giờ;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 24 Giờ & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC11 phụ thuộc vào hình thức nộp hồ sơ,\allowbreak{} cụ thể như sau:\allowbreak{} 1.\allowbreak{} Đối với hình thức trực tuyến:\allowbreak{} -\allowbreak{} Trong thời hạn 6 giờ làm việc kể từ khi Tổ chức cấp C/\allowbreak{}O nhận được hồ sơ đầy đủ và hợp lệ dưới dạng điện tử.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}12127\\
+	\hline
+	\makecell[lt]{TC\\027} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC12 là bao lâu? & \makecell[lt]{TTHC12\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 5 Ngày làm việc;\allowbreak{} Trực tuyến:\allowbreak{} 5 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 5 Ngày làm việc & \hspace{0pt}Đối với thủ tục TTHC12,\allowbreak{} thời hạn giải quyết là 05 ngày làm việc kể từ ngày cơ quan nhận đủ hồ sơ đúng theo QĐ.\allowbreak{} & \hspace{0pt}ĐT & \hspace{0pt}6978\\
+	\hline
+	\makecell[lt]{TC\\028} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC13 là bao lâu? & \makecell[lt]{TTHC13\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 1 Ngày làm việc;\allowbreak{} Trực tuyến:\allowbreak{} 1 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 1 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC13 là 01 ngày làm việc kể từ ngày nhận đủ hồ sơ hợp lệ theo QĐ.\allowbreak{} & \hspace{0pt}ĐT & \hspace{0pt}8528\\
+	\hline
+	\makecell[lt]{TC\\029} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC14 là bao lâu? & \makecell[lt]{TTHC14\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 5 Ngày làm việc;\allowbreak{} Trực tuyến:\allowbreak{} 5 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 5 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC14 là 5 ngày làm việc.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}14283\\
+	\hline
+	\makecell[lt]{TC\\030} & \hspace{0pt}TH & \hspace{0pt}Thời hạn của TTHC15 là bao lâu? & \makecell[lt]{TTHC15\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 3 Ngày làm việc;\allowbreak{} Trực tuyến:\allowbreak{} 3 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 3 Ngày làm việc & \hspace{0pt}Thời hạn giải quyết thủ tục TTHC15 là 3 ngày làm việc.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9158\\
+	\hline
+	\makecell[lt]{TC\\031} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC09 là bao nhiêu? & \makecell[lt]{TTHC09\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} Không quy định & \hspace{0pt}Đối với thủ tục TTHC09,\allowbreak{} lệ phí không được quy định.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}16272\\
+	\hline
+	\makecell[lt]{TC\\032} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC10 là bao nhiêu? & \makecell[lt]{TTHC10\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} 400000 Đồng Lệ phí:\allowbreak{} 400.\allowbreak{}000 đồng/\allowbreak{} trường hợp.\allowbreak{} -\allowbreak{} Miễn lệ phí đăng ký nuôi con nuôi trong nước đối với trường hợp cha dượng hoặc mẹ kế nhận con riêng của vợ hoặc chồng làm c.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC10,\allowbreak{} lệ phí được quy định như sau:\allowbreak{} Lệ phí:\allowbreak{} 400.\allowbreak{}000 đồng/\allowbreak{}trường hợp.\allowbreak{} Có các trường hợp được miễn lệ phí đăng ký nuôi con nuôi trong nước,\allowbreak{} bao gồm:\allowbreak{} -\allowbreak{} Cha dượng hoặc mẹ kế nhận con riêng của vợ hoặc chồng làm con nuôi.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}7803\\
+	\hline
+	\makecell[lt]{TC\\033} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC11 là bao nhiêu? & \makecell[lt]{TTHC11\\/PLP} & \hspace{0pt}Phí :\allowbreak{} Đồng Theo quy định của Bộ Tài chính & \hspace{0pt}Phí hoặc lệ phí của thủ tục TTHC11 được quy định theo Bộ Tài chính.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}12183\\
+	\hline
+	\makecell[lt]{TC\\034} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC12 là bao nhiêu? & \makecell[lt]{TTHC12\\/PLP} & \hspace{0pt}Dữ liệu nguồn không quy định phí/\allowbreak{}lệ phí.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về phí hoặc lệ phí của thủ tục TTHC12.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9313\\
+	\hline
+	\makecell[lt]{TC\\035} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC13 là bao nhiêu? & \makecell[lt]{TTHC13\\/PLP} & \hspace{0pt}Dữ liệu nguồn không quy định phí/\allowbreak{}lệ phí.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về mức phí hoặc lệ phí của thủ tục TTHC13.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}8839\\
+	\hline
+	\makecell[lt]{TC\\036} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC14 là bao nhiêu? & \makecell[lt]{TTHC14\\/PLP} & \hspace{0pt}Phí :\allowbreak{} Không quy định & \hspace{0pt}Đối với thủ tục TTHC14,\allowbreak{} mức phí hoặc lệ phí là Không quy định.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}10029\\
+	\hline
+	\makecell[lt]{TC\\037} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC15 là bao nhiêu? & \makecell[lt]{TTHC15\\/PLP} & \hspace{0pt}Phí :\allowbreak{} -\allowbreak{} Lệ phí đăng ký doanh nghiệp:\allowbreak{} 50.\allowbreak{}000 đồng/\allowbreak{}lần (Thông tư số 47/\allowbreak{}2019/\allowbreak{}TT-\allowbreak{}BTC).\allowbreak{} -\allowbreak{} Phí công bố nội dung đăng ký doanh nghiệp:\allowbreak{} 100.\allowbreak{}000 đồng/\allowbreak{}lần (Thông tư số 47/\allowbreak{}2019/\allowbreak{}TT-\allowbreak{}BTC).\allowbreak{} -\allowbreak{} Miễ.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC15,\allowbreak{} các khoản phí và lệ phí được quy định như sau:\allowbreak{} -\allowbreak{} Lệ phí đăng ký doanh nghiệp:\allowbreak{} 50.\allowbreak{}000 đồng/\allowbreak{}lần.\allowbreak{} -\allowbreak{} Phí công bố nội dung đăng ký doanh nghiệp:\allowbreak{} 100.\allowbreak{}000 đồng/\allowbreak{}lần.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9099\\
+	\hline
+	\makecell[lt]{TC\\038} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC16 là bao nhiêu? & \makecell[lt]{TTHC16\\/PLP} & \hspace{0pt}Phí :\allowbreak{} Đồng Không quy định & \hspace{0pt}Đối với thủ tục TTHC16,\allowbreak{} hiện tại không có quy định về mức phí hoặc lệ phí.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}14654\\
+	\hline
+	\makecell[lt]{TC\\039} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC17 là bao nhiêu? & \makecell[lt]{TTHC17\\/PLP} & \hspace{0pt}Phí :\allowbreak{} Đồng Không quy định & \hspace{0pt}Đối với thủ tục TTHC17,\allowbreak{} hiện tại không có quy định về mức phí hoặc lệ phí.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}10597\\
+	\hline
+	\makecell[lt]{TC\\040} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC18 là bao nhiêu? & \makecell[lt]{TTHC18\\/PLP} & \hspace{0pt}Phí :\allowbreak{} -\allowbreak{} Lệ phí đăng ký doanh nghiệp:\allowbreak{} 50.\allowbreak{}000 đồng/\allowbreak{}lần (Thông tư số 47/\allowbreak{}2019/\allowbreak{}TT-\allowbreak{}BTC).\allowbreak{} -\allowbreak{} Phí công bố nội dung đăng ký doanh nghiệp:\allowbreak{} 100.\allowbreak{}000 đồng/\allowbreak{}lần (Thông tư số 47/\allowbreak{}2019/\allowbreak{}TT-\allowbreak{}BTC).\allowbreak{} -\allowbreak{} Miễ.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC18,\allowbreak{} các khoản phí và lệ phí cụ thể như sau:\allowbreak{} 1.\allowbreak{} Lệ phí đăng ký doanh nghiệp:\allowbreak{} 50.\allowbreak{}000 đồng/\allowbreak{}lần.\allowbreak{} 2.\allowbreak{} Phí công bố nội dung đăng ký doanh nghiệp:\allowbreak{} 100.\allowbreak{}000 đồng/\allowbreak{}lần.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}51327\\
+	\hline
+	\makecell[lt]{TC\\041} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC19 là bao nhiêu? & \makecell[lt]{TTHC19\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} 10000 Đồng Nộp hồ sơ trực tiếp;\allowbreak{} Lệ phí :\allowbreak{} 5000 Đồng Nộp hồ sơ trực tuyến;\allowbreak{} Lệ phí :\allowbreak{} 10000 Đồng Nộp dịch vụ bưu chính & \hspace{0pt}Đối với TTHC19,\allowbreak{} lệ phí được quy định như sau:\allowbreak{} -\allowbreak{} Nộp hồ sơ trực tiếp:\allowbreak{} 10.\allowbreak{}000 đồng -\allowbreak{} Nộp hồ sơ trực tuyến:\allowbreak{} 5.\allowbreak{}000 đồng -\allowbreak{} Nộp qua dịch vụ bưu chính:\allowbreak{} 10.\allowbreak{}000 đồng & \hspace{0pt}Đ & \hspace{0pt}28281\\
+	\hline
+	\makecell[lt]{TC\\042} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC20 là bao nhiêu? & \makecell[lt]{TTHC20\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} 5000 Đồng Nộp hồ sơ trực tiếp;\allowbreak{} Lệ phí :\allowbreak{} 2500 Đồng Nộp hồ sơ trực tuyến;\allowbreak{} Lệ phí :\allowbreak{} 5000 Đồng Dịch vụ bưu chính & \hspace{0pt}Đối với TTHC20,\allowbreak{} mức lệ phí sẽ phụ thuộc vào hình thức nộp hồ sơ,\allowbreak{} cụ thể như sau:\allowbreak{} -\allowbreak{} Nộp hồ sơ trực tiếp:\allowbreak{} 5000 Đồng -\allowbreak{} Nộp hồ sơ trực tuyến:\allowbreak{} 2500 Đồng -\allowbreak{} Nộp hồ sơ qua dịch vụ bưu chính:\allowbreak{} 5000 Đồng & \hspace{0pt}Đ & \hspace{0pt}17402\\
+	\hline
+	\makecell[lt]{TC\\043} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC21 là bao nhiêu? & \makecell[lt]{TTHC21\\/PLP} & \hspace{0pt}Dữ liệu nguồn không quy định phí/\allowbreak{}lệ phí.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về mức phí hoặc lệ phí của thủ tục "Đăng ký giám hộ".\allowbreak{} Hiện tại,\allowbreak{} tôi chỉ có thông tin về mức lệ phí cho các thủ tục sau:\allowbreak{} 1.\allowbreak{} Thủ tục Đăng ký giám sát việc giám hộ:\allowbreak{} Lệ phí là 5000 Đồng.\allowbreak{} 2.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}8519\\
+	\hline
+	\makecell[lt]{TC\\044} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC22 là bao nhiêu? & \makecell[lt]{TTHC22\\/PLP} & \hspace{0pt}Dữ liệu nguồn không quy định phí/\allowbreak{}lệ phí.\allowbreak{} & \hspace{0pt}Mức phí hoặc lệ phí của TTHC22 được quy định theo Luật phí và lệ phí cùng các văn bản quy phạm pháp luật hướng dẫn Luật phí và lệ phí.\allowbreak{} Dữ liệu hiện tại chưa có thông tin cụ thể về con số mức phí hoặc lệ phí này.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}10501\\
+	\hline
+	\makecell[lt]{TC\\045} & \hspace{0pt}PLP & \hspace{0pt}Phí/\allowbreak{}lệ phí của TTHC23 là bao nhiêu? & \makecell[lt]{TTHC23\\/PLP} & \hspace{0pt}Dữ liệu nguồn không quy định phí/\allowbreak{}lệ phí.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về phí hoặc lệ phí của thủ tục TTHC23.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}10985\\
+	\hline
+	\makecell[lt]{TC\\046} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC01 do cơ quan nào thực hiện? & \makecell[lt]{TTHC01\\/CQ} & \hspace{0pt}Phòng Lao động -\allowbreak{} Thương binh và Xã hội huyện,\allowbreak{} Ủy ban nhân dân cấp xã,\allowbreak{} Sở Lao động Thương binh và Xã hội & \hspace{0pt}Thủ tục TTHC01 do các cơ quan sau thực hiện:\allowbreak{} Phòng Lao động -\allowbreak{} Thương binh và Xã hội huyện Ủy ban nhân dân cấp xã Sở Lao động Thương binh và Xã hội & \hspace{0pt}Đ & \hspace{0pt}9034\\
+	\hline
+	\makecell[lt]{TC\\047} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC02 do cơ quan nào thực hiện? & \makecell[lt]{TTHC02\\/CQ} & \hspace{0pt}Sở Xây dựng tỉnh Lai Châu & \hspace{0pt}Thủ tục TTHC02 do Sở Xây dựng tỉnh Lai Châu thực hiện.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}6634\\
+	\hline
+	\makecell[lt]{TC\\048} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC03 do cơ quan nào thực hiện? & \makecell[lt]{TTHC03\\/CQ} & \hspace{0pt}Ủy ban nhân dân cấp xã & \hspace{0pt}Thủ tục TTHC03 do Ủy ban nhân dân cấp xã thực hiện.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9316\\
+	\hline
+	\makecell[lt]{TC\\049} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC04 do cơ quan nào thực hiện? & \makecell[lt]{TTHC04\\/CQ} & \hspace{0pt}Sở Xây dựng tỉnh Lai Châu & \hspace{0pt}Thủ tục TTHC04 do Sở Xây dựng tỉnh Lai Châu thực hiện.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}10275\\
+	\hline
+	\makecell[lt]{TC\\050} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC05 do cơ quan nào thực hiện? & \makecell[lt]{TTHC05\\/CQ} & \hspace{0pt}Ủy ban nhân dân cấp tỉnh & \hspace{0pt}Thủ tục TTHC05 do Ủy ban nhân dân cấp tỉnh thực hiện.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}7459\\
+	\hline
+	\makecell[lt]{TC\\051} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC06 do cơ quan nào thực hiện? & \makecell[lt]{TTHC06\\/CQ} & \hspace{0pt}Sở Nông nghiệp và Phát triển nông thôn & \hspace{0pt}Thủ tục TTHC06 do cơ quan sau thực hiện:\allowbreak{} Sở Nông nghiệp và Phát triển nông thôn & \hspace{0pt}Đ & \hspace{0pt}13776\\
+	\hline
+	\makecell[lt]{TC\\052} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC07 do cơ quan nào thực hiện? & \makecell[lt]{TTHC07\\/CQ} & \hspace{0pt}Các tổ chức chính trị -\allowbreak{} xã hội,\allowbreak{} Các cơ quan,\allowbreak{} tổ chức liên quan & \hspace{0pt}TTHC07 do các cơ quan sau thực hiện:\allowbreak{} Các tổ chức chính trị -\allowbreak{} xã hội Các cơ quan,\allowbreak{} tổ chức liên quan & \hspace{0pt}Đ & \hspace{0pt}6903\\
+	\hline
+	\makecell[lt]{TC\\053} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC08 do cơ quan nào thực hiện? & \makecell[lt]{TTHC08\\/CQ} & \hspace{0pt}Sở Công Thương tỉnh Lai Châu & \hspace{0pt}Thủ tục TTHC08 do Sở Công Thương tỉnh Lai Châu thực hiện.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}15479\\
+	\hline
+	\makecell[lt]{TC\\054} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC09 do cơ quan nào thực hiện? & \makecell[lt]{TTHC09\\/CQ} & \hspace{0pt}Phòng kinh tế,\allowbreak{} Phòng Kinh tế,\allowbreak{} Hạ tầng và Đô thị & \hspace{0pt}Đối với thủ tục Cấp lại Giấy chứng nhận đăng ký hộ kinh doanh và Cấp đổi sang Giấy chứng nhận đăng ký hộ kinh doanh,\allowbreak{} cơ quan thực hiện là:\allowbreak{} Phòng kinh tế Phòng Kinh tế,\allowbreak{} Hạ tầng và Đô thị & \hspace{0pt}Đ & \hspace{0pt}14797\\
+	\hline
+	\makecell[lt]{TC\\055} & \hspace{0pt}CQ & \hspace{0pt}Thủ tục TTHC10 do cơ quan nào thực hiện? & \makecell[lt]{TTHC10\\/CQ} & \hspace{0pt}Ủy ban nhân dân cấp xã & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về thủ tục TTHC10.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}13582\\
+	\hline
+	\makecell[lt]{TC\\056} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC11 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC11\\/CT} & \hspace{0pt}Trực tuyến,\allowbreak{} Trực tiếp,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC11,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} -\allowbreak{} Trực tuyến -\allowbreak{} Trực tiếp -\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đ & \hspace{0pt}7345\\
+	\hline
+	\makecell[lt]{TC\\057} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC12 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC12\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC12,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} -\allowbreak{} Trực tiếp -\allowbreak{} Trực tuyến -\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đ & \hspace{0pt}18002\\
+	\hline
+	\makecell[lt]{TC\\058} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC13 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC13\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC13,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} -\allowbreak{} Trực tiếp -\allowbreak{} Dịch vụ bưu chính -\allowbreak{} Trực tuyến (một phần qua Cổng Dịch vụ công quốc gia tại địa chỉ:\allowbreak{} http:\allowbreak{}/\allowbreak{}/\allowbreak{}dichvucong.\allowbreak{}gov.\allowbreak{}vn) & \hspace{0pt}Đ & \hspace{0pt}13814\\
+	\hline
+	\makecell[lt]{TC\\059} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC14 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC14\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC14,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} 1.\allowbreak{} Qua dịch vụ bưu chính công ích.\allowbreak{} 2.\allowbreak{} Trực tiếp tại Trung tâm Phục vụ hành chính công tỉnh Lai Châu.\allowbreak{} 3.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9431\\
+	\hline
+	\makecell[lt]{TC\\060} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC15 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC15\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC15,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} -\allowbreak{} Trực tuyến -\allowbreak{} Trực tiếp -\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đ & \hspace{0pt}11760\\
+	\hline
+	\makecell[lt]{TC\\061} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC16 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC16\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC16,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} -\allowbreak{} Dịch vụ bưu chính -\allowbreak{} Trực tiếp -\allowbreak{} Trực tuyến & \hspace{0pt}Đ & \hspace{0pt}11112\\
+	\hline
+	\makecell[lt]{TC\\062} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC17 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC17\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC17,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} 1.\allowbreak{} Trực tiếp -\allowbreak{} Tại Trung tâm Phục vụ hành chính công tỉnh Lai Châu.\allowbreak{} 2.\allowbreak{} Dịch vụ bưu chính -\allowbreak{} Qua dịch vụ bưu chính công ích.\allowbreak{} 3.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9869\\
+	\hline
+	\makecell[lt]{TC\\063} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC18 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC18\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với thủ tục TTHC18,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} -\allowbreak{} Trực tuyến -\allowbreak{} Trực tiếp -\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đ & \hspace{0pt}47709\\
+	\hline
+	\makecell[lt]{TC\\064} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC19 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC19\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với TTHC19,\allowbreak{} bạn có thể nộp hồ sơ theo các hình thức sau:\allowbreak{} -\allowbreak{} Trực tiếp -\allowbreak{} Trực tuyến -\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đ & \hspace{0pt}25688\\
+	\hline
+	\makecell[lt]{TC\\065} & \hspace{0pt}CT & \hspace{0pt}Thủ tục TTHC20 có những hình thức nộp hồ sơ nào? & \makecell[lt]{TTHC20\\/CT} & \hspace{0pt}Trực tiếp,\allowbreak{} Trực tuyến,\allowbreak{} Dịch vụ bưu chính & \hspace{0pt}Đối với TTHC20,\allowbreak{} hiện có các hình thức nộp hồ sơ sau:\allowbreak{} -\allowbreak{} Trực tuyến -\allowbreak{} Dịch vụ bưu chính -\allowbreak{} Trực tiếp & \hspace{0pt}Đ & \hspace{0pt}19882\\
+	\hline
+	\makecell[lt]{TC\\066} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC01 gồm những văn bản nào? & \makecell[lt]{TTHC01\\/CCPL} & \hspace{0pt}26/\allowbreak{}2005/\allowbreak{}PL-\allowbreak{}UBTVQH11 -\allowbreak{} 26/\allowbreak{}2005/\allowbreak{}PL-\allowbreak{}UBTVQH11 -\allowbreak{} Ưu đãi người có công với cách mạng;\allowbreak{} 05/\allowbreak{}2013/\allowbreak{}TT-\allowbreak{}BLĐTBXH -\allowbreak{} Thông tư số 05/\allowbreak{}2013/\allowbreak{}TT-\allowbreak{}BLĐTBXH hướng dẫn về thủ tục lập hồ sơ,\allowbreak{} quản lý hồ sơ.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC01,\allowbreak{} các văn bản pháp lý bao gồm:\allowbreak{} -\allowbreak{} QUYẾT ĐỊNH VỀ VIỆC THÔNG QUA PHƯƠNG ÁN ĐƠN GIẢN HÓA THỦ TỤC HÀNH CHÍNH TRONG LĨNH VỰC NGƯỜI CÓ CÔNG THUỘC PHẠM VI.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}17005\\
+	\hline
+	\makecell[lt]{TC\\067} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC02 gồm những văn bản nào? & \makecell[lt]{TTHC02\\/CCPL} & \hspace{0pt}158/\allowbreak{}2024/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Quy định về hoạt động vận tải đường bộ & \hspace{0pt}Căn cứ pháp lý của thủ tục TTHC02 bao gồm:\allowbreak{} -\allowbreak{} Số hiệu:\allowbreak{} 158/\allowbreak{}2024/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Tên văn bản:\allowbreak{} Quy định về hoạt động vận tải đường bộ -\allowbreak{} Ngày ban hành:\allowbreak{} 18-\allowbreak{}12-\allowbreak{}2024 -\allowbreak{} Cơ quan ban hành:\allowbreak{} Chính phủ & \hspace{0pt}Đ & \hspace{0pt}19354\\
+	\hline
+	\makecell[lt]{TC\\068} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC03 gồm những văn bản nào? & \makecell[lt]{TTHC03\\/CCPL} & \hspace{0pt}42/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định số 42/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP của Chính phủ:\allowbreak{} Quy định chức năng,\allowbreak{} nhiệm vụ,\allowbreak{} quyền hạn và cơ cấu tổ chức của Bộ Y tế;\allowbreak{} 41/\allowbreak{}2024/\allowbreak{}QH15 -\allowbreak{} Luật Bảo hiểm xã hội & \hspace{0pt}Căn cứ pháp lý của thủ tục TTHC03 gồm các văn bản sau:\allowbreak{} 1.\allowbreak{} Nghị định số 42/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP của Chính phủ:\allowbreak{} Quy định chức năng,\allowbreak{} nhiệm vụ,\allowbreak{} quyền hạn và cơ cấu tổ chức của Bộ Y tế.\allowbreak{} 2.\allowbreak{} Luật Bảo hiểm xã hội số 41/\allowbreak{}2024/\allowbreak{}QH15.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}7084\\
+	\hline
+	\makecell[lt]{TC\\069} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC04 gồm những văn bản nào? & \makecell[lt]{TTHC04\\/CCPL} & \hspace{0pt}08/\allowbreak{}2021/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định 08/\allowbreak{}2021/\allowbreak{}NĐ-\allowbreak{}CP & \hspace{0pt}Căn cứ pháp lý của thủ tục TTHC04 là:\allowbreak{} Nghị định 08/\allowbreak{}2021/\allowbreak{}NĐ-\allowbreak{}CP,\allowbreak{} ban hành ngày 28-\allowbreak{}01-\allowbreak{}2021.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}7517\\
+	\hline
+	\makecell[lt]{TC\\070} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC05 gồm những văn bản nào? & \makecell[lt]{TTHC05\\/CCPL} & \hspace{0pt}190/\allowbreak{}2025/\allowbreak{}NQ-\allowbreak{}QH15 -\allowbreak{} Nghị quyết số 190/\allowbreak{}2025/\allowbreak{}QH15 của Quốc hội:\allowbreak{} Quy định về xử lý một số vấn đề liên quan đến sắp xếp tổ chức bộ máy nhà nước;\allowbreak{} 64/\allowbreak{}2020/\allowbreak{}QH14 -\allowbreak{} Luật Đầu tư theo phương thức đối tác công tư.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Căn cứ pháp lý của thủ tục TTHC05 bao gồm các văn bản sau:\allowbreak{} Nghị định số 243/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP của Chính phủ:\allowbreak{} Quy định chi tiết một số điều của Luật Đầu tư theo phương thức đối tác công tư (Số hiệu:\allowbreak{} 243/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP) Nghị quyết số 190/\allowbreak{}2025/\allowbreak{}QH15 của Quốc hội:\allowbreak{} Q.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}13672\\
+	\hline
+	\makecell[lt]{TC\\071} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC06 gồm những văn bản nào? & \makecell[lt]{TTHC06\\/CCPL} & \hspace{0pt}91/\allowbreak{}2024/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định sửa đổi,\allowbreak{} bổ sung một số điều của nghị định số 156/\allowbreak{}2018/\allowbreak{}NĐ-\allowbreak{}CP ngày 16/\allowbreak{}11/\allowbreak{}2018 của Chính phủ quy định chi tiết thi hành một số.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về căn cứ pháp lý của thủ tục TTHC06.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}11790\\
+	\hline
+	\makecell[lt]{TC\\072} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC07 gồm những văn bản nào? & \makecell[lt]{TTHC07\\/CCPL} & \hspace{0pt}52/\allowbreak{}2019/\allowbreak{}QH14 -\allowbreak{} Luật 52/\allowbreak{}2019/\allowbreak{}QH14;\allowbreak{} 93/\allowbreak{}2025/\allowbreak{}QH15 -\allowbreak{} Luật số 93/\allowbreak{}2025/\allowbreak{}QH15 của Quốc hội:\allowbreak{} Luật Khoa học,\allowbreak{} công nghệ và đổi mới sáng tạo;\allowbreak{} 63/\allowbreak{}2025/\allowbreak{}QH15 -\allowbreak{} Luật số 63/\allowbreak{}2025/\allowbreak{}QH15 của Quốc hội:\allowbreak{} Luật Tổ chức Chính phủ.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Căn cứ pháp lý của TTHC07 bao gồm các văn bản sau:\allowbreak{} 1.\allowbreak{} Số hiệu:\allowbreak{} 80/\allowbreak{}2025/\allowbreak{}QH15 Tên văn bản:\allowbreak{} Luật số 80/\allowbreak{}2025/\allowbreak{}QH15 của Quốc hội:\allowbreak{} Luật Cán bộ,\allowbreak{} công chức Ngày ban hành:\allowbreak{} 24-\allowbreak{}06-\allowbreak{}2025 Cơ quan ban hành:\allowbreak{} Ủy ban thường vụ quốc hội 2.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}14979\\
+	\hline
+	\makecell[lt]{TC\\073} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC08 gồm những văn bản nào? & \makecell[lt]{TTHC08\\/CCPL} & \hspace{0pt}Luật 36/\allowbreak{}2005/\allowbreak{}QH11 -\allowbreak{} LUẬT Thương mại;\allowbreak{} 81/\allowbreak{}2018/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định 81/\allowbreak{}2018/\allowbreak{}NĐ-\allowbreak{}CP;\allowbreak{} 128/\allowbreak{}2024/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định số 128/\allowbreak{}2024/\allowbreak{}NĐ-\allowbreak{}CP sửa đổi,\allowbreak{} bổ sung một số điều của Nghị định số 81/\allowbreak{}2018/\allowbreak{}NĐ-\allowbreak{}CP của Chính phủ quy định chi tiết Luật Thương m.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC08,\allowbreak{} các căn cứ pháp lý bao gồm:\allowbreak{} 1.\allowbreak{} Số hiệu:\allowbreak{} 128/\allowbreak{}2024/\allowbreak{}NĐ-\allowbreak{}CP Tên văn bản:\allowbreak{} Nghị định số 128/\allowbreak{}2024/\allowbreak{}NĐ-\allowbreak{}CP sửa đổi,\allowbreak{} bổ sung một số điều của Nghị định số 81/\allowbreak{}2018/\allowbreak{}NĐ-\allowbreak{}CP của Chính phủ quy định chi tiết Luật Thương mại về hoạt động xúc tiến.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}11921\\
+	\hline
+	\makecell[lt]{TC\\074} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC09 gồm những văn bản nào? & \makecell[lt]{TTHC09\\/CCPL} & \hspace{0pt}59/\allowbreak{}2020/\allowbreak{}QH14 -\allowbreak{} Luật Doanh nghiệp số 59/\allowbreak{}2020/\allowbreak{}QH14;\allowbreak{} 01/\allowbreak{}2021/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định số 01/\allowbreak{}2021/\allowbreak{}NĐ-\allowbreak{}CP của Chính phủ:\allowbreak{} Về đăng ký doanh nghiệp;\allowbreak{} 125/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định số 125/\allowbreak{}2025/\allowbreak{}NĐ-\allowbreak{}CP của Chính phủ:\allowbreak{} Quy định về phân định thẩm quyền của.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Căn cứ pháp lý của thủ tục TTHC09 bao gồm:\allowbreak{} Luật Doanh nghiệp số 59/\allowbreak{}2020/\allowbreak{}QH14,\allowbreak{} được ban hành ngày 17-\allowbreak{}06-\allowbreak{}2020.\allowbreak{} & \hspace{0pt}ĐT & \hspace{0pt}41037\\
+	\hline
+	\makecell[lt]{TC\\075} & \hspace{0pt}CCPL & \hspace{0pt}Căn cứ pháp lý của TTHC10 gồm những văn bản nào? & \makecell[lt]{TTHC10\\/CCPL} & \hspace{0pt}19/\allowbreak{}2011/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định 19/\allowbreak{}2011/\allowbreak{}NĐ-\allowbreak{}CP;\allowbreak{} 114/\allowbreak{}2016/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Nghị định 114/\allowbreak{}2016/\allowbreak{}NĐ-\allowbreak{}CP;\allowbreak{} 267/\allowbreak{}2016/\allowbreak{}TT-\allowbreak{}BTC -\allowbreak{} Thông tư 267/\allowbreak{}2016/\allowbreak{}TT-\allowbreak{}BTC;\allowbreak{} 24/\allowbreak{}2019/\allowbreak{}NĐ-\allowbreak{}CP -\allowbreak{} Sửa đổi.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC10,\allowbreak{} các căn cứ pháp lý bao gồm:\allowbreak{} -\allowbreak{} Sửa đổi,\allowbreak{} bổ sung một số điều của Nghị định số 19/\allowbreak{}2011/\allowbreak{}NĐ-\allowbreak{}CP ngày 21 tháng 3 năm 2011 của Chính phủ quy định chi tiết thi hành một số điều của Luật nuôi con nuôi (Số hiệu:\allowbreak{} 24/\allowbreak{}2019/\allowbreak{}NĐ-\allowbreak{}CP) -\allowbreak{} Luật Nuô.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9359\\
+	\hline
+	\makecell[lt]{TC\\076} & \hspace{0pt}KQ & \hspace{0pt}Kết quả của TTHC01 là gì? & \makecell[lt]{TTHC01\\/KQ} & \hspace{0pt}Quyết định trợ cấp mai táng phí & \hspace{0pt}Sau khi thực hiện thủ tục TTHC01,\allowbreak{} kết quả nhận được là:\allowbreak{} Quyết định trợ cấp mai táng phí & \hspace{0pt}Đ & \hspace{0pt}7584\\
+	\hline
+	\makecell[lt]{TC\\077} & \hspace{0pt}KQ & \hspace{0pt}Kết quả của TTHC02 là gì? & \makecell[lt]{TTHC02\\/KQ} & \hspace{0pt}Thông báo khai thác tuyến vận tải hành khách cố định giữa Việt Nam,\allowbreak{} Lào và Campuchia.\allowbreak{} & \hspace{0pt}Sau khi thực hiện thủ tục TTHC02,\allowbreak{} bạn sẽ nhận được:\allowbreak{} Thông báo khai thác tuyến vận tải hành khách cố định giữa Việt Nam,\allowbreak{} Lào và Campuchia.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}12482\\
+	\hline
+	\makecell[lt]{TC\\078} & \hspace{0pt}KQ & \hspace{0pt}Kết quả của TTHC03 là gì? & \makecell[lt]{TTHC03\\/KQ} & \hspace{0pt}Quyết định hỗ trợ chi phí mai táng (BYT) & \hspace{0pt}Sau khi thực hiện thủ tục TTHC03,\allowbreak{} kết quả nhận được là:\allowbreak{} Quyết định hỗ trợ chi phí mai táng (BYT) & \hspace{0pt}Đ & \hspace{0pt}9311\\
+	\hline
+	\makecell[lt]{TC\\079} & \hspace{0pt}KQ & \hspace{0pt}Kết quả của TTHC04 là gì? & \makecell[lt]{TTHC04\\/KQ} & \hspace{0pt}Quyết định về việc TTHC04 & \hspace{0pt}Sau khi thực hiện thủ tục TTHC04,\allowbreak{} quý khách sẽ nhận được:\allowbreak{} Quyết định về việc TTHC04 & \hspace{0pt}Đ & \hspace{0pt}13465\\
+	\hline
+	\makecell[lt]{TC\\080} & \hspace{0pt}KQ & \hspace{0pt}Kết quả của TTHC05 là gì? & \makecell[lt]{TTHC05\\/KQ} & \hspace{0pt}Văn bản chấp thuận hoặc không chấp thuận việc nhà đầu tư lập báo cáo nghiên cứu tiền khả thi,\allowbreak{} Báo cáo đề xuất chủ trương đầu tư & \hspace{0pt}Sau khi thực hiện thủ tục TTHC05,\allowbreak{} bạn sẽ nhận được:\allowbreak{} Văn bản chấp thuận hoặc không chấp thuận việc nhà đầu tư lập báo cáo nghiên cứu tiền khả thi,\allowbreak{} Báo cáo đề xuất chủ trương đầu tư.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}11658\\
+	\hline
+	\makecell[lt]{TC\\081} & \hspace{0pt}HTTN & \hspace{0pt}Ngữ cảnh:\allowbreak{} Tôi muốn hỏi về TTHC10.\allowbreak{}\newline{}Hỏi:\allowbreak{} Thế lệ phí bao nhiêu? & \makecell[lt]{TTHC10\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} 400000 Đồng Lệ phí:\allowbreak{} 400.\allowbreak{}000 đồng/\allowbreak{} trường hợp.\allowbreak{} -\allowbreak{} Miễn lệ phí đăng ký nuôi con nuôi trong nước đối với trường hợp cha dượng hoặc mẹ kế nhận con riêng của vợ hoặc chồng làm c.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC10,\allowbreak{} mức lệ phí được quy định như sau:\allowbreak{} Lệ phí:\allowbreak{} 400.\allowbreak{}000 đồng/\allowbreak{}trường hợp.\allowbreak{} Bạn sẽ được miễn lệ phí đăng ký nuôi con nuôi trong nước nếu thuộc một trong các trường hợp sau:\allowbreak{} Cha dượng hoặc mẹ kế nhận con riêng của vợ hoặc chồng làm con.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}26836\\
+	\hline
+	\makecell[lt]{TC\\082} & \hspace{0pt}HTTN & \hspace{0pt}Ngữ cảnh:\allowbreak{} Cho tôi biết TTHC20.\allowbreak{}\newline{}Hỏi:\allowbreak{} Nếu nộp sau 15 giờ thì bao lâu có kết quả? & \makecell[lt]{TTHC20\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 1 Ngày;\allowbreak{} Trực tuyến:\allowbreak{} 1 Ngày;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 1 Ngày & \hspace{0pt}Đối với TTHC20,\allowbreak{} nếu hồ sơ được tiếp nhận sau 15 giờ và không thể giải quyết ngay trong ngày,\allowbreak{} kết quả sẽ được trả vào ngày làm việc tiếp theo.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}48861\\
+	\hline
+	\makecell[lt]{TC\\083} & \hspace{0pt}HTTN & \hspace{0pt}Ngữ cảnh:\allowbreak{} Tôi đang tìm hiểu TTHC19.\allowbreak{}\newline{}Hỏi:\allowbreak{} Nộp online thì lệ phí khác trực tiếp không? & \makecell[lt]{TTHC19\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} 10000 Đồng Nộp hồ sơ trực tiếp;\allowbreak{} Lệ phí :\allowbreak{} 5000 Đồng Nộp hồ sơ trực tuyến;\allowbreak{} Lệ phí :\allowbreak{} 10000 Đồng Nộp dịch vụ bưu chính & \hspace{0pt}Về câu hỏi của bạn liên quan đến lệ phí khi nộp hồ sơ trực tuyến so với nộp trực tiếp cho TTHC19,\allowbreak{} tôi xin thông tin cụ thể như sau:\allowbreak{} Có sự khác biệt về mức lệ phí tùy theo hình thức nộp hồ sơ:\allowbreak{} -\allowbreak{} Nếu bạn nộp hồ sơ trực tiếp.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}10805\\
+	\hline
+	\makecell[lt]{TC\\084} & \hspace{0pt}HTTN & \hspace{0pt}Ngữ cảnh:\allowbreak{} Tôi cần cấp C/\allowbreak{}O mẫu EUR.\allowbreak{}1.\allowbreak{}\newline{}Hỏi:\allowbreak{} Nộp trực tuyến thì mất mấy giờ? & \makecell[lt]{TTHC11\\/TH} & \hspace{0pt}Trực tuyến:\allowbreak{} 6 Giờ;\allowbreak{} Trực tiếp:\allowbreak{} 8 Giờ;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 24 Giờ & \hspace{0pt}đối với thủ tục TTHC11 khi nộp hồ sơ trực tuyến,\allowbreak{} thời gian giải quyết được quy định như sau:\allowbreak{} -\allowbreak{} Trong 6 giờ làm việc kể từ khi Tổ chức cấp C/\allowbreak{}O nhận được hồ sơ đầy đủ và hợp lệ dưới dạng điện tử trên hệ thống eCoSys.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}9702\\
+	\hline
+	\makecell[lt]{TC\\085} & \hspace{0pt}HTTN & \hspace{0pt}Ngữ cảnh:\allowbreak{} Tôi muốn TTHC15.\allowbreak{}\newline{}Hỏi:\allowbreak{} Cần nộp những giấy tờ chính nào? & \makecell[lt]{TTHC15\\/HS} & \hspace{0pt}Giấy đề nghị đăng ký doanh nghiệp (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} Điều lệ công ty (BC:\allowbreak{} 1 BS:\allowbreak{} 0);\allowbreak{} Cam kết thực hiện mục tiêu xã hội,\allowbreak{} môi trường có chữ ký của những người sau đây:\allowbreak{} cổ đông sáng lập là cá nhân,\allowbreak{} cổ đông khác là cá nhân.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}để TTHC15,\allowbreak{} bạn cần chuẩn bị các giấy tờ chính sau:\allowbreak{} 1.\allowbreak{} Giấy đề nghị đăng ký doanh nghiệp SL:\allowbreak{} 1 BC 2.\allowbreak{} Điều lệ công ty SL:\allowbreak{} 1 BC Đây là những giấy tờ cần thiết theo thông tin hiện có.\allowbreak{} Nếu bạn có bất kỳ câu hỏi nào khác,\allowbreak{} đừng ngần ngại hỏi nhé! & \hspace{0pt}ĐT & \hspace{0pt}9261\\
+	\hline
+	\makecell[lt]{TC\\086} & \hspace{0pt}BN & \hspace{0pt}Tôi nghe nói cứ nhận con nuôi là luôn phải đóng 400.\allowbreak{}000 đồng,\allowbreak{} đúng không? & \makecell[lt]{TTHC10\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} 400000 Đồng Lệ phí:\allowbreak{} 400.\allowbreak{}000 đồng/\allowbreak{} trường hợp.\allowbreak{} -\allowbreak{} Miễn lệ phí đăng ký nuôi con nuôi trong nước đối với trường hợp cha dượng hoặc mẹ kế nhận con riêng của vợ hoặc chồng làm c.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Tôi hiểu bạn đang quan tâm đến mức lệ phí khi thực hiện thủ tục nhận con nuôi.\allowbreak{} Thông tin bạn nghe nói về mức phí 400.\allowbreak{}000 đồng là chưa chính xác.\allowbreak{} Đối với thủ tục Giải quyết việc nuôi con nuôi có yếu tố nước ngoài đối với trường hợp cha dượng.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}27767\\
+	\hline
+	\makecell[lt]{TC\\087} & \hspace{0pt}BN & \hspace{0pt}C/\allowbreak{}O mẫu EUR.\allowbreak{}1 nộp trực tuyến có phải chờ 24 giờ như nộp bưu chính không? & \makecell[lt]{TTHC11\\/TH} & \hspace{0pt}Trực tuyến:\allowbreak{} 6 Giờ;\allowbreak{} Trực tiếp:\allowbreak{} 8 Giờ;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 24 Giờ & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về C/\allowbreak{}O mẫu EUR.\allowbreak{}1,\allowbreak{} cũng như thời gian giải quyết khi nộp trực tuyến hay qua dịch vụ bưu chính.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}26386\\
+	\hline
+	\makecell[lt]{TC\\088} & \hspace{0pt}BN & \hspace{0pt}Xác nhận tình trạng hôn nhân online cũng mất 10.\allowbreak{}000 đồng như nộp trực tiếp phải không? & \makecell[lt]{TTHC19\\/PLP} & \hspace{0pt}Lệ phí :\allowbreak{} 10000 Đồng Nộp hồ sơ trực tiếp;\allowbreak{} Lệ phí :\allowbreak{} 5000 Đồng Nộp hồ sơ trực tuyến;\allowbreak{} Lệ phí :\allowbreak{} 10000 Đồng Nộp dịch vụ bưu chính & \hspace{0pt}Về lệ phí cấp Giấy xác nhận tình trạng hôn nhân,\allowbreak{} có sự khác biệt giữa hình thức nộp hồ sơ trực tuyến và trực tiếp:\allowbreak{} -\allowbreak{} Nếu bạn nộp hồ sơ trực tuyến,\allowbreak{} lệ phí là 5.\allowbreak{}000 Đồng.\allowbreak{} -\allowbreak{} Nếu bạn nộp hồ sơ trực tiếp,\allowbreak{} lệ phí là 10.\allowbreak{}000 Đồng.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}24263\\
+	\hline
+	\makecell[lt]{TC\\089} & \hspace{0pt}BN & \hspace{0pt}Đăng ký khai sinh sau 15 giờ có chắc chắn nhận kết quả ngay trong ngày không? & \makecell[lt]{TTHC20\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 1 Ngày;\allowbreak{} Trực tuyến:\allowbreak{} 1 Ngày;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 1 Ngày & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về vấn đề đăng ký khai sinh.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}21850\\
+	\hline
+	\makecell[lt]{TC\\090} & \hspace{0pt}BN & \hspace{0pt}Đăng ký kết hôn lúc nào cũng xong trong 1 ngày,\allowbreak{} không bao giờ cần xác minh đúng không? & \makecell[lt]{TTHC22\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 1 Ngày;\allowbreak{} Trực tuyến:\allowbreak{} 1 Ngày;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 1 Ngày & \hspace{0pt}Tôi hiểu bạn đang quan tâm đến thời gian giải quyết TTHC22.\allowbreak{} Về câu hỏi của bạn,\allowbreak{} không phải lúc nào TTHC22 cũng xong trong 1 ngày và không phải lúc nào cũng không cần xác minh.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}33009\\
+	\hline
+	\makecell[lt]{TC\\091} & \hspace{0pt}BN & \hspace{0pt}Ngày ban hành Thông tư 05/\allowbreak{}2013 là 15-\allowbreak{}05-\allowbreak{}2013,\allowbreak{} vậy thời hạn giải quyết mai táng phí là 2013 ngày đúng không? & \makecell[lt]{TTHC01\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} 16 Ngày làm việc;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} 16 Ngày làm việc & \hspace{0pt}Tôi hiểu bạn đang quan tâm đến thời hạn giải quyết thủ tục mai táng phí.\allowbreak{} Tuy nhiên,\allowbreak{} có một sự nhầm lẫn trong cách tính toán của bạn.\allowbreak{} Ngày ban hành của một văn bản pháp lý,\allowbreak{} như ngày 15-\allowbreak{}05-\allowbreak{}2013 của Thông tư 05/\allowbreak{}2013 mà bạn đề cập.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}S & \hspace{0pt}34481\\
+	\hline
+	\makecell[lt]{TC\\092} & \hspace{0pt}BN & \hspace{0pt}Đăng ký công ty cổ phần qua mạng có phải vẫn nộp lệ phí đăng ký doanh nghiệp 50.\allowbreak{}000 đồng không? & \makecell[lt]{TTHC15\\/PLP} & \hspace{0pt}Phí :\allowbreak{} -\allowbreak{} Lệ phí đăng ký doanh nghiệp:\allowbreak{} 50.\allowbreak{}000 đồng/\allowbreak{}lần (Thông tư số 47/\allowbreak{}2019/\allowbreak{}TT-\allowbreak{}BTC).\allowbreak{} -\allowbreak{} Phí công bố nội dung đăng ký doanh nghiệp:\allowbreak{} 100.\allowbreak{}000 đồng/\allowbreak{}lần (Thông tư số 47/\allowbreak{}2019/\allowbreak{}TT-\allowbreak{}BTC).\allowbreak{} -\allowbreak{} Miễ.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đối với thủ tục TTHC15,\allowbreak{} nếu bạn thực hiện đăng ký qua mạng điện tử,\allowbreak{} bạn sẽ được miễn lệ phí đăng ký doanh nghiệp.\allowbreak{} Cụ thể,\allowbreak{} lệ phí đăng ký doanh nghiệp thông thường là 50.\allowbreak{}000 đồng/\allowbreak{}lần,\allowbreak{} nhưng trường hợp đăng ký qua mạng điện tử sẽ được miễn.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}29652\\
+	\hline
+	\makecell[lt]{TC\\093} & \hspace{0pt}BN & \hspace{0pt}Phí điều chỉnh giấy chứng nhận LPG ở khu vực khác có phải 1.\allowbreak{}200.\allowbreak{}000 đồng như thành phố không? & \makecell[lt]{TTHC24\\/PLP} & \hspace{0pt}Phí :\allowbreak{} Tại khu vực thành phố,\allowbreak{} thị xã thuộc tỉnh:\allowbreak{} -\allowbreak{} Mức thu phí thẩm định kinh doanh hàng hóa,\allowbreak{} dịch vụ kinh doanh có điều kiện 1.\allowbreak{}200.\allowbreak{}000 đồng/\allowbreak{}điểm kinh doanh/\allowbreak{}lần thẩm định đối với tổ.\allowbreak{}.\allowbreak{}.\allowbreak{};\allowbreak{} Lệ phí :\allowbreak{} Tại các khu vực khác.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Về câu hỏi của bạn liên quan đến phí điều chỉnh Giấy chứng nhận đủ điều kiện thương nhân xuất khẩu,\allowbreak{} nhập khẩu LPG ở khu vực khác,\allowbreak{} tôi xin đính chính như sau:\allowbreak{} Mức phí 1.\allowbreak{}200.\allowbreak{}000 đồng/\allowbreak{}điểm kinh doanh/\allowbreak{}lần thẩm định áp dụng cho tổ chức.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}26099\\
+	\hline
+	\makecell[lt]{TC\\094} & \hspace{0pt}BN & \hspace{0pt}TTHC16 có thời hạn 5 ngày làm việc giống đăng ký khuyến mại may rủi không? & \makecell[lt]{TTHC16\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} Không quy định;\allowbreak{} Trực tuyến:\allowbreak{} Không quy định;\allowbreak{} Dịch vụ bưu chính:\allowbreak{} Không quy định & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về thời hạn giải quyết đối với thủ tục TTHC16 hay đăng ký khuyến mại may rủi.\allowbreak{} & \hspace{0pt}ĐT & \hspace{0pt}12908\\
+	\hline
+	\makecell[lt]{TC\\095} & \hspace{0pt}BN & \hspace{0pt}Chuyển mục đích sử dụng rừng lúc nào cũng 35 ngày,\allowbreak{} không có trường hợp 48 ngày đúng không? & \makecell[lt]{TTHC06\\/TH} & \hspace{0pt}Trực tiếp:\allowbreak{} -\allowbreak{} Hội đồng nhân dân cấp tỉnh xem xét,\allowbreak{} quyết định điều chỉnh chủ trương chuyển mục đích sử.\allowbreak{}.\allowbreak{}.\allowbreak{};\allowbreak{} Trực tuyến:\allowbreak{} -\allowbreak{} Hội đồng nhân dân cấp tỉnh xem xét,\allowbreak{} quyết định điều chỉnh chủ trương chuyển mục đích sử.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Tôi hiểu bạn đang quan tâm đến thời gian giải quyết thủ tục TTHC06.\allowbreak{} Thông tin bạn đưa ra chưa hoàn toàn chính xác.\allowbreak{} Thời gian giải quyết thủ tục này không phải lúc nào cũng là 35 ngày.\allowbreak{} Có hai trường hợp cụ thể như sau:\allowbreak{} 1.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}Đ & \hspace{0pt}23900\\
+	\hline
+	\makecell[lt]{TC\\096} & \hspace{0pt}NPV & \hspace{0pt}Bạn dự đoán giá vàng ngày mai giúp tôi được không? & - & \hspace{0pt}Chatbot cần từ chối hoặc thông báo dữ liệu hiện tại không có thông tin;\allowbreak{} không tự bịa thủ tục hoặc quy định.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về vấn đề này.\allowbreak{} Tôi chỉ có thể hỗ trợ bạn về các thủ tục hành chính liên quan đến cấp lại Giấy chứng nhận đủ điều kiện trạm nạp LPG vào phương tiện vận tải hoặc gia hạn hoạt động cảng,\allowbreak{} bến thủy nội địa.\allowbreak{} & \hspace{0pt}TCĐ & \hspace{0pt}27292\\
+	\hline
+	\makecell[lt]{TC\\097} & \hspace{0pt}NPV & \hspace{0pt}Tôi muốn xin giấy phép xây căn cứ trên sao Hỏa ở Lai Châu thì làm thủ tục gì? & - & \hspace{0pt}Chatbot cần từ chối hoặc thông báo dữ liệu hiện tại không có thông tin;\allowbreak{} không tự bịa thủ tục hoặc quy định.\allowbreak{} & \hspace{0pt}tôi hiểu bạn đang quan tâm đến việc xin giấy phép xây dựng.\allowbreak{} Tuy nhiên,\allowbreak{} yêu cầu "xin giấy phép xây căn cứ trên sao Hỏa ở Lai Châu" là một tình huống đặc biệt và không thuộc phạm vi các thủ tục hành chính thông thường tại Việt Nam.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}TCĐ & \hspace{0pt}24082\\
+	\hline
+	\makecell[lt]{TC\\098} & \hspace{0pt}NPV & \hspace{0pt}Hãy viết cho tôi một bài quảng cáo bán hàng không liên quan đến thủ tục hành chính.\allowbreak{} & - & \hspace{0pt}Chatbot cần từ chối hoặc thông báo dữ liệu hiện tại không có thông tin;\allowbreak{} không tự bịa thủ tục hoặc quy định.\allowbreak{} & \hspace{0pt}Với vai trò là chuyên viên tư vấn thủ tục hành chính,\allowbreak{} tôi chỉ có thể cung cấp thông tin và hỗ trợ về các thủ tục hành chính dựa trên dữ liệu hiện có.\allowbreak{} Yêu cầu viết bài quảng cáo bán hàng không liên quan đến thủ tục hành chính nằm ngoài phạm vi chuyên.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}TCĐ & \hspace{0pt}40597\\
+	\hline
+	\makecell[lt]{TC\\099} & \hspace{0pt}NPV & \hspace{0pt}Tôi bị mất ví,\allowbreak{} bạn có chuyển tiền khẩn cấp cho tôi được không? & - & \hspace{0pt}Chatbot cần từ chối hoặc thông báo dữ liệu hiện tại không có thông tin;\allowbreak{} không tự bịa thủ tục hoặc quy định.\allowbreak{} & \hspace{0pt}Tôi rất tiếc khi nghe bạn bị mất ví.\allowbreak{} Tuy nhiên,\allowbreak{} tôi là chuyên viên tư vấn về các thủ tục hành chính và không có chức năng thực hiện các giao dịch tài chính hay chuyển tiền khẩn cấp.\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{} & \hspace{0pt}TCĐ & \hspace{0pt}31297\\
+	\hline
+	\makecell[lt]{TC\\100} & \hspace{0pt}NPV & \hspace{0pt}Cho tôi biết kết quả xổ số ngày mai ở Lai Châu.\allowbreak{} & - & \hspace{0pt}Chatbot cần từ chối hoặc thông báo dữ liệu hiện tại không có thông tin;\allowbreak{} không tự bịa thủ tục hoặc quy định.\allowbreak{} & \hspace{0pt}Dữ liệu hiện tại chưa có thông tin quy định về kết quả xổ số.\allowbreak{} Tôi chỉ có thể hỗ trợ bạn về các thủ tục hành chính liên quan đến lĩnh vực đường bộ và đấu giá tài sản.\allowbreak{} & \hspace{0pt}TCĐ & \hspace{0pt}22220\\
+	\hline
+\end{longtable}
+\endgroup
+
+

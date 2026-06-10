@@ -1,0 +1,277 @@
+% !TeX program = xelatex
+\documentclass[a4paper,12pt,oneside]{report}
+
+% XeLaTeX-friendly Vietnamese setup
+\usepackage{fontspec}
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\setmainfont{Noto Serif}}
+\usepackage{polyglossia}
+\setdefaultlanguage{vietnamese}
+
+\addto\captionsvietnamese{%
+  \renewcommand{\contentsname}{MỤC LỤC}%
+  \renewcommand{\figurename}{Hình}%
+  \renewcommand{\tablename}{Bảng}%
+  \renewcommand{\listfigurename}{DANH MỤC HÌNH ẢNH}%
+  \renewcommand{\listtablename}{DANH MỤC BẢNG}%
+}
+\usepackage[fontsize=13pt]{fontsize}
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=2cm,headheight=16pt]{geometry}
+\usepackage{pdflscape}
+\usepackage{setspace}\onehalfspacing
+\usepackage{graphicx}
+\graphicspath{{tai_nguyen/}{tai_nguyen/media/}}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{fancyhdr}
+\usepackage{emptypage}
+\usepackage{tabularx}
+\usepackage{longtable}
+% booktabs removed from visual tables; all tables use full borders
+\usepackage{array}
+\setlength{\tabcolsep}{4pt}
+\setlength{\extrarowheight}{3pt}
+\renewcommand{\arraystretch}{1.32}
+\usepackage{calc}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font={small,it},labelfont=bf,justification=centering,labelsep=period,aboveskip=8pt,belowskip=8pt}
+\captionsetup[table]{skip=8pt}
+\captionsetup[figure]{skip=8pt}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.2cm}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{chngcntr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false,pdfborder={0 0 0},linkcolor=black}
+\usepackage{xurl}
+\usepackage{seqsplit}
+\usepackage{ragged2e}
+\usepackage{indentfirst}
+\usepackage{etoolbox}
+\usepackage[skip=0pt, indent=30pt]{parskip}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+\newenvironment{Shaded}{}{}
+\newcommand{\KeywordTok}[1]{#1}
+\newcommand{\DataTypeTok}[1]{#1}
+\newcommand{\DecValTok}[1]{#1}
+\newcommand{\BaseNTok}[1]{#1}
+\newcommand{\FloatTok}[1]{#1}
+\newcommand{\ConstantTok}[1]{#1}
+\newcommand{\CharTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{#1}
+\newcommand{\StringTok}[1]{#1}
+\newcommand{\VerbatimStringTok}[1]{#1}
+\newcommand{\SpecialStringTok}[1]{#1}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{#1}
+\newcommand{\DocumentationTok}[1]{#1}
+\newcommand{\AnnotationTok}[1]{#1}
+\newcommand{\CommentVarTok}[1]{#1}
+\newcommand{\OtherTok}[1]{#1}
+\newcommand{\FunctionTok}[1]{#1}
+\newcommand{\VariableTok}[1]{#1}
+\newcommand{\ControlFlowTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{#1}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{#1}
+\newcommand{\AttributeTok}[1]{#1}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{#1}
+\newcommand{\WarningTok}[1]{#1}
+\newcommand{\AlertTok}[1]{#1}
+\newcommand{\ErrorTok}[1]{#1}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Header / footer
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\cfoot{\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+% Heading format
+\titlelabel{\thetitle.\quad}
+\titleformat{\chapter}[display]{\fontsize{16pt}{16pt}\bfseries\centering}{\MakeUppercase{\chaptertitlename}\ \thechapter}{5pt}{}
+\titlespacing*{\chapter}{0pt}{0pt}{6pt}
+\setcounter{secnumdepth}{4}
+\titleformat{\section}{\fontsize{13pt}{15pt}\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\fontsize{13pt}{15pt}\bfseries\itshape}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\fontsize{13pt}{15pt}\bfseries\itshape}{\thesubsubsection.}{0.5em}{}
+
+% TOC/List of figures/tables formatting
+\renewcommand{\cftdotsep}{1}
+
+% Dấu chấm dẫn dòng trong mục lục
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+
+% Dấu chấm dẫn dòng trong danh mục hình/bảng
+\renewcommand{\cftfigleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cfttableader}{\cftdotfill{\cftdotsep}}
+
+\cftsetindents{table}{0em}{6em}
+\cftsetindents{figure}{0em}{6em}
+\renewcommand\cfttabpresnum{Bảng }
+\renewcommand{\cftfigpresnum}{Hình }
+\renewcommand{\cfttabaftersnum}{.}
+\renewcommand{\cftfigaftersnum}{.}
+\renewcommand{\cfttoctitlefont}{\hfill\large\bfseries\MakeUppercase}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftlottitlefont}{\hfill\large\bfseries\MakeUppercase}
+\renewcommand{\cftafterlottitle}{\hfill}
+\renewcommand{\cftloftitlefont}{\hfill\large\bfseries\MakeUppercase}
+\renewcommand{\cftafterloftitle}{\hfill}
+\setlength{\cftbeforetoctitleskip}{0em}
+\setlength{\cftaftertoctitleskip}{2em}
+\setlength{\cftbeforelottitleskip}{0em}
+\setlength{\cftbeforeloftitleskip}{0em}
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecaftersnum}{.}
+
+\renewcommand\theadfont{\bfseries}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\listfigurename}{DANH MỤC HÌNH ẢNH}
+\renewcommand{\listtablename}{DANH MỤC BẢNG}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
+
+
+\DeclareRobustCommand{\codepath}[1]{\begingroup\ttfamily\footnotesize\nolinkurl{#1}\endgroup}
+\DeclareRobustCommand{\codepathraw}[1]{\codepath{#1}}
+\emergencystretch=3em
+\sloppy
+\justifying
+\setlength{\floatsep}{12pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
+\setlength{\intextsep}{12pt plus 2pt minus 2pt}
+\AtBeginEnvironment{longtable}{\fontsize{12pt}{15pt}\selectfont\renewcommand{\arraystretch}{1.38}}
+\newcommand{\continuedcaption}[1]{\caption[]{#1 (tiếp theo)}\\}
+\newcommand{\mychapter}[2]{%
+    \ifnum#1=0
+        \setcounter{chapter}{0}%
+        \setcounter{section}{0}%
+        \chapter*{#2}%
+    \else
+        \setcounter{chapter}{\numexpr#1-1\relax}%
+        \refstepcounter{chapter}%
+        \chapter*{#2}%
+    \fi
+}
+
+
+% Phụ lục: giữ tiêu đề PHỤ LỤC, nhưng không tách riêng thành trang trắng
+\newif\iffirstappendix
+\firstappendixtrue
+
+\newcommand{\phulucchapter}[1]{%
+    \iffirstappendix
+        \firstappendixfalse
+        \vspace{1em}
+    \else
+        \clearpage
+    \fi
+    \refstepcounter{chapter}%
+    \setcounter{section}{0}%
+    \setcounter{table}{0}%
+    \setcounter{figure}{0}%
+    \section*{Phụ lục \thechapter. #1}%
+    \addcontentsline{toc}{section}{Phụ lục \thechapter. #1}%
+}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\input{bia/bia_ngoai}
+\input{bia/bia_trong}
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+\clearpage
+\chapter*{LỜI CẢM ƠN}
+\addcontentsline{toc}{chapter}{LỜI CẢM ƠN}
+\input{chuong/loi_cam_on}
+
+\clearpage
+\addcontentsline{toc}{chapter}{LỜI CAM ĐOAN}
+\input{chuong/loi_cam_doan}
+
+\clearpage
+\tableofcontents
+
+\clearpage
+\renewcommand{\listfigurename}{DANH MỤC HÌNH ẢNH}
+\addcontentsline{toc}{chapter}{DANH MỤC HÌNH ẢNH}
+\listoffigures
+
+\clearpage
+\renewcommand{\listtablename}{DANH MỤC BẢNG}
+\addcontentsline{toc}{chapter}{DANH MỤC BẢNG}
+\listoftables
+
+\clearpage
+\chapter*{DANH MỤC TỪ VIẾT TẮT}
+\addcontentsline{toc}{chapter}{DANH MỤC TỪ VIẾT TẮT}
+\input{chuong/viet_tat}
+
+\clearpage
+\pagenumbering{arabic}
+\mychapter{0}{MỞ ĐẦU}
+\addcontentsline{toc}{chapter}{MỞ ĐẦU}
+\input{chuong/mo_dau}
+
+\clearpage
+\mychapter{1}{CHƯƠNG 1: CƠ SỞ LÝ THUYẾT}
+\addcontentsline{toc}{chapter}{CHƯƠNG 1: CƠ SỞ LÝ THUYẾT}
+\input{chuong/chuong_1}
+
+\clearpage
+\mychapter{2}{CHƯƠNG 2: KHẢO SÁT VÀ PHÂN TÍCH HỆ THỐNG}
+\addcontentsline{toc}{chapter}{CHƯƠNG 2: KHẢO SÁT VÀ PHÂN TÍCH HỆ THỐNG}
+\input{chuong/chuong_2}
+
+\clearpage
+\mychapter{3}{CHƯƠNG 3: THIẾT KẾ HỆ THỐNG}
+\addcontentsline{toc}{chapter}{CHƯƠNG 3: THIẾT KẾ HỆ THỐNG}
+\input{chuong/chuong_3}
+
+\clearpage
+\mychapter{4}{CHƯƠNG 4: TRIỂN KHAI}
+\addcontentsline{toc}{chapter}{CHƯƠNG 4: TRIỂN KHAI}
+\input{chuong/chuong_4}
+
+\clearpage
+\chapter*{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+\addcontentsline{toc}{chapter}{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+\input{chuong/ket_luan}
+
+\clearpage
+\chapter*{TÀI LIỆU THAM KHẢO}
+\addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
+\input{chuong/tai_lieu_tham_khao}
+
+\clearpage
+\chapter*{PHỤ LỤC}
+\addcontentsline{toc}{chapter}{PHỤ LỤC}
+\appendix
+\input{chuong/phu_luc}
+
+\clearpage
+\chapter*{NHẬN XÉT CỦA GIÁO VIÊN HƯỚNG DẪN}
+\addcontentsline{toc}{chapter}{NHẬN XÉT CỦA GIÁO VIÊN HƯỚNG DẪN}
+\input{chuong/nhan_xet_gvhd}
+\end{document}

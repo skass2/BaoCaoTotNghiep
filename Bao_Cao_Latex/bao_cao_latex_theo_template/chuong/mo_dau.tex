@@ -1,0 +1,137 @@
+\section*{Lý do chọn đề
+tài}
+
+Trong quá trình chuyển đổi số lĩnh vực hành chính công, nhu cầu tra cứu
+thủ tục của người dân ngày càng tăng. Người dân thường cần những thông
+tin rất cụ thể như hồ sơ phải chuẩn bị, cơ quan tiếp nhận, thời hạn xử
+lý, phí hoặc lệ phí. Tuy nhiên, các thông tin này thường được trình bày
+trong những trang thủ tục dài, có nhiều thuật ngữ chuyên môn và yêu cầu
+người dùng biết khá rõ tên thủ tục trước khi tìm kiếm.
+
+Với tỉnh Lai Châu, đặc điểm địa bàn miền núi, dân cư phân tán và mức độ
+tiếp cận công nghệ chưa đồng đều làm cho việc hỗ trợ tra cứu trực tuyến
+trở nên cần thiết hơn. Một công cụ hỏi đáp bằng tiếng Việt tự nhiên có
+thể giúp người dân kiểm tra trước những thông tin cơ bản, giảm số lần đi
+lại và hạn chế tình trạng chuẩn bị thiếu giấy tờ khi đến cơ quan tiếp
+nhận.
+
+Đề tài lựa chọn kỹ thuật Retrieval-Augmented Generation (RAG) vì lĩnh
+vực hành chính công yêu cầu câu trả lời phải bám theo dữ liệu nguồn. Mô
+hình ngôn ngữ lớn (LLM) có thể diễn đạt tốt, nhưng nếu không có cơ chế
+truy xuất và ràng buộc dữ liệu thì dễ phát sinh thông tin không có căn
+cứ. RAG cho phép hệ thống tìm tài liệu liên quan trước, sau đó dùng mô
+hình ngôn ngữ để diễn giải lại thông tin theo cách dễ đọc hơn.
+
+Từ những lý do trên, đề tài ``Nghiên cứu và xây dựng chatbot hỗ trợ tra
+cứu thủ tục hành chính (TTHC) cho tỉnh Lai Châu dựa trên kỹ thuật RAG''
+được thực hiện nhằm xây dựng một hệ thống hỏi đáp trực tuyến, phục vụ
+nhu cầu tra cứu thông tin thủ tục hành chính ở mức tư vấn ban đầu.
+
+\section*{Mục đích nghiên
+cứu}
+
+Mục tiêu tổng quát của đề tài là xây dựng một ứng dụng chatbot web có
+khả năng tiếp nhận câu hỏi bằng ngôn ngữ tự nhiên, truy xuất thông tin
+từ kho dữ liệu TTHC và sinh câu trả lời ngắn gọn, rõ ràng, có kiểm soát
+theo dữ liệu nguồn.
+
+\begin{itemize}
+\item
+  Nghiên cứu tổng quan về chatbot, LLM, embedding, vector database và kỹ
+  thuật RAG.
+\item
+  Khảo sát bài toán tra cứu TTHC, xác định nhóm thông tin người dân
+  thường hỏi và yêu cầu quản trị dữ liệu.
+\item
+  Thu thập, chuẩn hóa và tổ chức dữ liệu TTHC tỉnh Lai Châu thành dạng
+  phù hợp cho hệ thống RAG.
+\item
+  Xây dựng pipeline gồm các bước: làm sạch dữ liệu, chia chunk, tạo
+  embedding, lưu vào ChromaDB, truy xuất, reranking và sinh câu trả lời.
+\item
+  Triển khai backend API, giao diện web chatbot, chức năng xác thực, lưu
+  lịch sử hội thoại và trang quản trị dữ liệu.
+\item
+  Kiểm thử hệ thống theo các nhóm tiêu chí: chức năng, bảo mật, chất
+  lượng truy xuất, độ đúng của câu trả lời và thời gian phản hồi.
+\end{itemize}
+
+\section*{Đối tượng và phạm vi nghiên
+cứu}
+
+Đối tượng nghiên cứu của đề tài gồm dữ liệu TTHC, quy trình người dân
+tra cứu thông tin, kỹ thuật xử lý ngôn ngữ tự nhiên (NLP), mô hình RAG,
+cơ sở dữ liệu vector và kiến trúc ứng dụng web client-server.
+
+Phạm vi hệ thống tập trung vào chức năng hỗ trợ tra cứu thông tin TTHC
+cho tỉnh Lai Châu thông qua giao diện chatbot web. Hệ thống xử lý câu
+hỏi dạng văn bản tiếng Việt; chưa triển khai nhận dạng giọng nói, OCR
+giấy tờ, thanh toán trực tuyến, ký số hoặc nộp hồ sơ trực tiếp lên hệ
+thống nghiệp vụ của cơ quan nhà nước.
+
+\textbf{Nguồn dữ liệu sử dụng trong đồ án được thu thập từ Cổng Dịch vụ
+công tỉnh Lai Châu và đối chiếu với Cổng Dịch vụ công Quốc gia. Trong
+quá trình xây dựng bộ dữ liệu thử nghiệm, một số mã thủ tục và mã định
+danh được đối chiếu theo dữ liệu công khai liên quan đến TTHC. Dữ liệu
+được chốt trong giai đoạn thực hiện đồ án tháng 5 năm 2026; khi triển
+khai chính thức cần rà soát lại theo thời điểm vận hành thực tế vì TTHC
+có thể thay đổi theo văn bản mới.}
+
+Định dạng dữ liệu ban đầu là nội dung thủ tục hiển thị trên cổng dịch vụ
+công dưới dạng trang thông tin/văn bản theo từng thủ tục. Sau khi thu
+thập, dữ liệu được chuyển về dạng JSON để hệ thống dễ xử lý. Mỗi bản ghi
+gồm mã thủ tục, tên thủ tục và phần nội dung chi tiết như lĩnh vực, đối
+tượng thực hiện, cơ quan thực hiện, cách thức thực hiện, thời hạn, phí,
+lệ phí, thành phần hồ sơ và căn cứ pháp lý.
+
+Bộ dữ liệu thử nghiệm hiện có 1.950 TTHC, thuộc 176 lĩnh vực. Sau bước
+kiểm tra, bộ dữ liệu không còn trùng mã thủ tục hoặc trùng tên thủ tục ở
+mức bản ghi chính. Những trường rỗng, giá trị ``không quy định'', nội
+dung thừa từ giao diện cổng và các đoạn nhiễu được chuẩn hóa trước khi
+đưa vào pipeline RAG. Các thông tin dài được chia thành chunk theo ý
+nghĩa nghiệp vụ để phục vụ tìm kiếm ngữ nghĩa.
+
+\section*{Phương pháp nghiên
+cứu}
+
+Đề tài kết hợp giữa nghiên cứu lý thuyết và thực nghiệm phần mềm. Phần
+lý thuyết dùng để xác định nền tảng công nghệ; phần thực nghiệm dùng để
+kiểm tra các lựa chọn kỹ thuật trong bối cảnh dữ liệu TTHC tiếng Việt.
+
+\begin{itemize}
+\item
+  Phương pháp khảo sát và phân tích nghiệp vụ: xác định quy trình tra
+  cứu, tác nhân sử dụng, nhu cầu thông tin và phạm vi hệ thống.
+\item
+  Phương pháp xử lý dữ liệu: chuẩn hóa văn bản, loại bỏ nội dung nhiễu,
+  kiểm tra trùng lặp, tách dữ liệu theo trường nghiệp vụ và chuyển thành
+  JSON thống nhất.
+\item
+  Phương pháp thiết kế hệ thống: xây dựng Use Case, thiết kế kiến trúc
+  backend/frontend, dữ liệu Firestore, metadata ChromaDB và pipeline
+  RAG.
+\item
+  Phương pháp thực nghiệm: triển khai mã nguồn, chạy thử với dữ liệu
+  thật, quan sát log truy xuất và điều chỉnh chunking, prompt hoặc
+  reranking khi có lỗi.
+\item
+  Phương pháp kiểm thử: xây dựng bộ câu hỏi thử nghiệm theo nhóm hồ sơ,
+  phí/lệ phí, thời hạn, cơ quan thực hiện, câu hỏi tiếp nối và câu hỏi
+  ngoài phạm vi.
+\end{itemize}
+
+\section*{Cấu trúc báo
+cáo}
+
+Báo cáo được trình bày theo bốn chương, gồm:
+
+\begin{itemize}
+\item
+  Chương 1. CƠ SỞ LÝ THUYẾT
+\item
+  Chương 2. KHẢO SÁT VÀ PHÂN TÍCH HỆ THỐNG
+\item
+  Chương 3. THIẾT KẾ HỆ THỐNG
+\item
+  Chương 4. TRIỂN KHAI
+\end{itemize}

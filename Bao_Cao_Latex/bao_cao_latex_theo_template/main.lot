@@ -1,0 +1,41 @@
+\contentsline {table}{\numberline {1.1}{\ignorespaces Vai trò các thành phần trong kỹ thuật RAG}}{6}{table.1.1}%
+\contentsline {table}{\numberline {1.2}{\ignorespaces Một số tiêu chí đánh giá hệ thống RAG}}{7}{table.1.2}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Minh chứng nguồn dữ liệu và xử lý dữ liệu đầu vào}}{11}{table.2.1}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Tổng hợp vấn đề trong quá trình tra cứu TTHC}}{11}{table.2.2}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Ví dụ thủ tục thật trước và sau khi đưa vào hệ thống}}{12}{table.2.3}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces Thống kê dữ liệu đầu vào phục vụ hệ thống RAG}}{12}{table.2.4}%
+\contentsline {table}{\numberline {2.5}{\ignorespaces Phạm vi thực hiện của hệ thống}}{14}{table.2.5}%
+\contentsline {table}{\numberline {2.6}{\ignorespaces Tác nhân và nhu cầu sử dụng}}{14}{table.2.6}%
+\contentsline {table}{\numberline {2.7}{\ignorespaces Yêu cầu chức năng của hệ thống}}{17}{table.2.7}%
+\contentsline {table}{\numberline {2.8}{\ignorespaces Yêu cầu phi chức năng và tiêu chí chấp nhận}}{18}{table.2.8}%
+\contentsline {table}{\numberline {2.9}{\ignorespaces Tác nhân và Use Case chính}}{22}{table.2.9}%
+\contentsline {table}{\numberline {2.10}{\ignorespaces Đặc tả UC01 - Đăng nhập và xác thực người dùng}}{22}{table.2.10}%
+\contentsline {table}{\numberline {2.11}{\ignorespaces Đặc tả UC02 - Tra cứu TTHC}}{23}{table.2.11}%
+\contentsline {table}{\numberline {2.12}{\ignorespaces Đặc tả UC03 - Xem chi tiết thông tin thủ tục}}{24}{table.2.12}%
+\contentsline {table}{\numberline {2.13}{\ignorespaces Đặc tả UC04 - Hỏi đáp TTHC bằng chatbot}}{24}{table.2.13}%
+\contentsline {table}{\numberline {2.14}{\ignorespaces Đặc tả UC05 - Xem lịch sử hội thoại}}{25}{table.2.14}%
+\contentsline {table}{\numberline {2.15}{\ignorespaces Đặc tả UC06 - Quản lý dữ liệu TTHC}}{25}{table.2.15}%
+\contentsline {table}{\numberline {2.16}{\ignorespaces Đặc tả UC07 - Đồng bộ và xây dựng lại VectorDB}}{26}{table.2.16}%
+\contentsline {table}{\numberline {2.17}{\ignorespaces So sánh các giải pháp chatbot cho bài toán tra cứu TTHC}}{27}{table.2.17}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Thiết kế lớp thực thể chính}}{32}{table.3.1}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Thiết kế các collection chính trên Firestore}}{33}{table.3.2}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Thiết kế metadata cho dữ liệu trong ChromaDB}}{34}{table.3.3}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Thiết kế nguồn trích dẫn trong câu trả lời}}{37}{table.3.4}%
+\contentsline {table}{\numberline {3.5}{\ignorespaces Danh sách API chính và API đề xuất của hệ thống}}{39}{table.3.5}%
+\contentsline {table}{\numberline {3.6}{\ignorespaces Môi trường và thành phần triển khai}}{46}{table.3.6}%
+\contentsline {table}{\numberline {3.7}{\ignorespaces Nhóm mã nguồn backend và vai trò}}{47}{table.3.7}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces API chính frontend sử dụng}}{52}{table.4.1}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Checklist bảo vệ khi triển khai}}{54}{table.4.2}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Kịch bản kiểm thử chức năng có minh chứng}}{55}{table.4.3}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Phân nhóm bộ 100 câu hỏi thử nghiệm chatbot RAG}}{56}{table.4.4}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Kết quả đánh giá định lượng chatbot RAG}}{57}{table.4.5}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Tổng hợp trạng thái đánh giá theo nhóm câu hỏi}}{58}{table.4.6}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces So sánh kết quả với baseline tìm kiếm từ khóa mô phỏng}}{59}{table.4.7}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Một số kết quả kiểm thử đại diện sau khi chạy API}}{60}{table.4.8}%
+\contentsline {table}{\numberline {4.9}{\ignorespaces Đối chiếu kết quả triển khai với yêu cầu đề cương}}{64}{table.4.9}%
+\contentsline {table}{\numberline {4.10}{\ignorespaces Một số lỗi thường gặp khi vận hành}}{65}{table.4.10}%
+\contentsline {table}{\numberline {A.1}{\ignorespaces Cấu trúc mã nguồn chính}}{70}{table.A.1}%
+\contentsline {table}{\numberline {B.1}{\ignorespaces Lệnh chạy hệ thống}}{72}{table.B.1}%
+\contentsline {table}{\numberline {C.1}{\ignorespaces Thống kê dữ liệu thử nghiệm}}{73}{table.C.1}%
+\contentsline {table}{\numberline {D.1}{\ignorespaces Quy ước chấm điểm hiệu năng}}{74}{table.D.1}%
+\contentsline {table}{\numberline {D.2}{\ignorespaces Bộ 100 câu hỏi kiểm thử và kết quả đánh giá}}{74}{table.D.2}%

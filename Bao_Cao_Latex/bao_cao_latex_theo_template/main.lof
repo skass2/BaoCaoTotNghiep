@@ -1,0 +1,29 @@
+\contentsline {figure}{\numberline {2.1}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Ảnh màn hình trang tra cứu TTHC trên Cổng Dịch vụ công tỉnh Lai Châu}}{10}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Ảnh màn hình trang chi tiết một TTHC trước khi chuẩn hóa dữ liệu}}{10}{figure.caption.7}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ BPMN quy trình hỏi đáp TTHC bằng chatbot}}{16}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ Use Case tổng quát của hệ thống}}{20}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ Use Case nhóm người dùng}}{21}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ Use Case nhóm quản trị viên}}{21}{figure.caption.11}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Kiến trúc tổng thể của hệ thống chatbot RAG}}{30}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Entity Class Diagram của hệ thống}}{31}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ quan hệ dữ liệu User - Session - Message - Procedure - Chunk - Admin}}{32}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Luồng xử lý câu hỏi bằng pipeline RAG (a)}}{35}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Luồng xử lý câu hỏi bằng pipeline RAG (b)}}{36}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Thiết kế trích dẫn nguồn trong câu trả lời}}{37}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ tuần tự luồng tra cứu TTHC}}{42}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ tuần tự luồng xem chi tiết thông tin thủ tục}}{42}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ tuần tự xử lý API /user/chat}}{43}{figure.caption.21}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ tuần tự đồng bộ VectorDB}}{43}{figure.caption.22}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sitemap giao diện người dùng và quản trị viên thiết kế bảo mật và phân quyền}}{44}{figure.caption.23}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Giao diện hỏi đáp TTHC bằng chatbot}}{45}{figure.caption.24}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Giao diện quản lý dữ liệu TTHC}}{45}{figure.caption.25}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Biểu đồ triển khai hệ thống (Deployment Diagram)}}{46}{figure.caption.26}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Sơ đồ tuần tự xử lý Pipeline Advanced RAG chi tiết}}{48}{figure.caption.27}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Lưu đồ thuật toán đăng ký và xác thực OTP}}{49}{figure.caption.28}%
+\contentsline {figure}{\numberline {3.17}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Lưu đồ trích xuất JSON bằng AI cho quản trị viên}}{50}{figure.caption.29}%
+\contentsline {figure}{\numberline {3.18}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Biểu đồ trạng thái đồng bộ và sao lưu VectorDB}}{51}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Minh chứng Firestore lưu phiên hội thoại và tin nhắn}}{54}{figure.caption.32}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Biểu đồ phân bố 100 câu hỏi kiểm thử theo nhóm}}{57}{figure.caption.33}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Kết quả đánh giá câu trả lời chatbot}}{58}{figure.caption.34}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces Thời gian phản hồi trung bình theo nhóm câu hỏi}}{58}{figure.caption.35}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces \xpg@aux {}{vietnamese}\ignorespaces So sánh baseline tìm kiếm từ khóa mô phỏng và chatbot RAG}}{60}{figure.caption.36}%

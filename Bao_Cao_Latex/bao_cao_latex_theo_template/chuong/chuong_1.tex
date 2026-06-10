@@ -1,0 +1,298 @@
+\section{Chatbot trong hỗ trợ tra cứu thủ tục
+hành
+chính}
+
+Chatbot là một phần mềm tiếp nhận các yêu cầu của người dùng sau đó phản
+hồi theo dạng hội thoại. Trong các hệ thống thông thường, chatbot có thể
+dùng để chăm sóc khách hàng, trả lời câu hỏi lặp lại hoặc hướng dẫn thao
+tác. Trong hành chính công, yêu cầu đặt ra chặt chẽ hơn vì thông tin trả
+lời liên quan trực tiếp đến giấy tờ, thời hạn, phí, lệ phí và các cơ
+quan có thẩm quyền.
+
+Người dân thường không nhớ chính xác tên thủ tục hoặc mã thủ tục. Họ mô
+tả nhu cầu bằng lời nói hằng ngày, ví dụ ``làm giấy khai sinh cần gì'',
+``đăng ký kết hôn ở đâu'', ``cấp lại giấy tờ mất bao lâu''. Vì vậy,
+chatbot trong đề tài không chỉ là một ô tìm kiếm có giao diện hội thoại,
+mà là lớp trung gian giúp chuyển câu hỏi tự nhiên thành truy vấn có thể
+xử lý trên kho dữ liệu thủ tục.
+
+Trong phạm vi đồ án, chatbot được xem là kênh hỗ trợ tra cứu ban đầu. Hệ
+thống không thay thế cán bộ chuyên môn và không đưa ra quyết định hành
+chính. Vai trò của hệ thống là tìm thông tin phù hợp, diễn giải ngắn gọn
+và thông báo rõ khi dữ liệu hiện tại không có căn cứ để trả lời.
+
+Có hai hướng chatbot phổ biến. Chatbot dựa trên luật dễ kiểm soát nhưng
+kém linh hoạt khi người dùng thay đổi cách diễn đạt. Chatbot dùng LLM
+linh hoạt hơn nhưng có nguy cơ sinh thông tin không có trong dữ liệu
+nguồn. Với bài toán TTHC, hướng phù hợp là chatbot AI có ràng buộc bởi
+kho dữ liệu đã kiểm soát thông qua kỹ thuật RAG.
+
+\section{Xử lý ngôn ngữ tự nhiên và mô hình
+ngôn ngữ
+lớn}
+
+NLP giúp hệ thống tiếp nhận và phân tích câu hỏi tiếng Việt của người
+dùng. Trong bài toán này, xử lý ngôn ngữ không dừng ở việc tách từ hay
+tìm kiếm từ khóa. Hệ thống cần nhận biết các cách nói khác nhau của cùng
+một ý định, chẳng hạn ``cần giấy tờ gì'', ``hồ sơ gồm gì'', ``chuẩn bị
+những gì'' đều hướng đến nhóm thông tin thành phần hồ sơ.
+
+LLM hỗ trợ đọc và diễn giải các đoạn dữ liệu hành chính dài thành câu
+trả lời dễ hiểu hơn. Tuy nhiên, mô hình không được sử dụng như nguồn tri
+thức độc lập. Nếu để mô hình tự trả lời theo kiến thức sẵn có, hệ thống
+có thể sinh thông tin không đúng với thủ tục đang áp dụng. Vì vậy, mô
+hình trong đề tài chỉ đóng vai trò tổng hợp và trình bày lại context đã
+được truy xuất từ kho dữ liệu.
+
+Để giảm rủi ro, prompt gửi cho mô hình cần quy định rõ: chỉ trả lời theo
+dữ liệu được cung cấp; nếu dữ liệu không đề cập thì phải thông báo không
+có thông tin trong kho hiện tại; không tự suy diễn mức phí, thời hạn
+hoặc giấy tờ. Nguyên tắc này đặc biệt quan trọng với hệ thống hành chính
+công vì người dùng có thể dựa vào câu trả lời để chuẩn bị hồ sơ.
+
+Trong mã nguồn của đồ án, mô hình sinh câu trả lời được cấu hình theo cơ
+chế model chính và fallback. Giai đoạn phát triển ưu tiên mô hình chạy
+cục bộ qua Ollama để giảm chi phí thử nghiệm, đồng thời có thể chuyển
+sang các dịch vụ khác khi mô hình chính không khả dụng. Thiết kế này
+giúp hệ thống linh hoạt hơn trong quá trình chạy thử và demo.
+
+\section{Embedding, tìm kiếm ngữ nghĩa và
+reranking}
+
+Embedding là bước chuyển văn bản thành vector số. Khi câu hỏi và đoạn
+tài liệu đều được biểu diễn dưới dạng vector, hệ thống có thể so sánh độ
+gần nhau về mặt ngữ nghĩa thay vì chỉ so khớp chuỗi ký tự. Đây là nền
+tảng để chatbot hiểu được các câu hỏi có cách diễn đạt khác nhau nhưng
+cùng ý nghĩa.
+
+Trong đồ án, mô hình embedding được sử dụng là
+sentence-transformers/all-MiniLM-L6-v2 thông qua lớp
+HuggingFaceEmbeddings. Mô hình này chạy ở phía backend theo hướng local:
+khi khởi tạo, hệ thống tải mô hình về môi trường chạy và dùng trực tiếp
+để tạo vector cho dữ liệu cũng như câu hỏi. Như vậy, bước embedding
+không phụ thuộc vào API bên ngoài cho từng truy vấn, phù hợp với giai
+đoạn prototype và thử nghiệm.
+
+Ưu điểm của all-MiniLM-L6-v2 là nhẹ, tốc độ xử lý nhanh và đủ phù hợp
+cho bài toán truy xuất văn bản ngắn đến trung bình. Tuy nhiên, mô hình
+này không phải mô hình tối ưu riêng cho tiếng Việt pháp lý. Vì vậy, hệ
+thống bổ sung bước chuẩn hóa synonym, nhận diện tên thủ tục và reranking
+để giảm sai lệch trong quá trình chọn context.
+
+Sau khi semantic search trả về danh sách chunk ứng viên, hệ thống sử
+dụng CrossEncoder với mô hình cross-encoder/ms-marco-MiniLM-L-6-v2 để
+chấm lại mức độ phù hợp giữa câu hỏi và từng chunk. Khác với embedding
+search chỉ so sánh vector đã tạo sẵn, CrossEncoder đánh giá trực tiếp
+cặp câu hỏi - tài liệu, do đó có khả năng xếp lại các kết quả gần nghĩa
+nhưng chưa đúng trọng tâm. Nếu reranker không tải được, hệ thống vẫn có
+thể chạy theo kết quả truy xuất ban đầu, nhưng chất lượng chọn context
+có thể giảm.
+
+\section{Kỹ thuật Retrieval-Augmented
+Generation
+(RAG)}
+
+RAG là một kỹ thuật kết hợp giữa việc truy xuất thông tin và tạo ra văn
+bản. Hệ thống trước tiên tìm các đoạn dữ liệu liên quan từ kho tri thức,
+sau đó đưa các đoạn này vào ngữ cảnh để mô hình ngôn ngữ sinh câu trả
+lời. Cách làm này phù hợp với những lĩnh vực cần dữ liệu có nguồn rõ
+ràng và thường xuyên cập nhật.
+
+Trong bài toán TTHC, RAG tách hai nhiệm vụ thành hai pha. Pha truy xuất
+chịu trách nhiệm tìm đúng thủ tục và đúng trường thông tin như hồ sơ,
+phí, lệ phí, thời hạn hoặc cơ quan thực hiện. Pha sinh chịu trách nhiệm
+diễn giải dữ liệu được tìm thấy thành câu trả lời ngắn gọn, dễ đọc. Nhờ
+vậy, mô hình ngôn ngữ không phải tự nhớ toàn bộ dữ liệu pháp lý.
+
+Pha xây dựng kho tri thức bắt đầu từ dữ liệu thủ tục đã chuẩn hóa. Mỗi
+thủ tục được chia thành các chunk theo ý nghĩa nghiệp vụ thay vì cắt cơ
+học theo độ dài. Ví dụ, thông tin tổng quan, cách thức thực hiện, thành
+phần hồ sơ và căn cứ pháp lý được tách thành những nhóm riêng. Với các
+đoạn quá dài, hệ thống mới tiếp tục chia nhỏ bằng
+RecursiveCharacterTextSplitter để đảm bảo kích thước phù hợp cho truy
+xuất.
+
+Pha hỏi đáp bắt đầu khi người dùng nhập câu hỏi. Hệ thống có thể xử lý
+intent xã giao, viết lại câu hỏi dựa trên lịch sử, chuẩn hóa từ đồng
+nghĩa, truy xuất dữ liệu trong ChromaDB, rerank kết quả và chọn context
+cuối cùng. Context này được đưa vào prompt cho LLM sinh câu trả lời. Nếu
+context không chứa thông tin cần hỏi, câu trả lời phải thể hiện rằng dữ
+liệu hiện tại không đề cập.
+
+\begin{longtable}[]{|
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1716}}|
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3128}}|
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5156}}|}
+\caption{Vai trò các thành phần trong kỹ thuật RAG}\\
+\hline
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Thành phần}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Vai trò}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Ý nghĩa trong đề tài}
+\end{minipage} \\
+\hline
+\endfirsthead
+\continuedcaption{Vai trò các thành phần trong kỹ thuật RAG}
+\hline
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Thành phần}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Vai trò}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Ý nghĩa trong đề tài}
+\end{minipage} \\
+\hline
+\endhead
+\hline
+\endlastfoot
+Dữ liệu nguồn & Lưu thông tin thủ tục & Là căn cứ để chatbot trả lời,
+hạn chế suy diễn. \\
+\hline
+Chunking & Chia dữ liệu theo nhóm ý nghĩa & Giúp truy xuất đúng phần hồ
+sơ, phí, thời hạn hoặc cơ quan. \\
+\hline
+Embedding & Biểu diễn văn bản thành vector & Cho phép tìm kiếm theo ngữ
+nghĩa, không phụ thuộc hoàn toàn vào từ khóa. \\
+\hline
+Vector database & Lưu vector và metadata & Hỗ trợ tìm nhanh các chunk
+liên quan đến câu hỏi. \\
+\hline
+Reranker & Xếp hạng lại kết quả truy xuất & Giảm nguy cơ chọn nhầm thủ
+tục hoặc nhầm trường thông tin. \\
+\hline
+LLM & Sinh câu trả lời từ context & Diễn giải dữ liệu hành chính thành
+câu trả lời dễ hiểu. \\
+\hline
+\end{longtable}
+
+\section{Vector database và
+ChromaDB}
+
+Vector database là cơ sở dữ liệu được thiết kế để lưu trữ vector
+embedding và tìm kiếm các vector gần nhau theo một thước đo tương đồng.
+Trong hệ thống RAG, vector database đóng vai trò cầu nối giữa câu hỏi
+của người dùng và kho dữ liệu thủ tục đã được chia chunk.
+
+Đồ án sử dụng ChromaDB để lưu các vector embedding kèm metadata.
+Metadata có thể gồm mã thủ tục, tên thủ tục, lĩnh vực, loại chunk và các
+thông tin nhận diện khác. Nhờ metadata, hệ thống không chỉ tìm theo độ
+tương đồng ngữ nghĩa mà còn có thể lọc theo thủ tục hoặc nhóm thông tin
+khi cần. Điều này hữu ích vì nhiều TTHC có tên gần giống nhau hoặc cùng
+thuộc một lĩnh vực.
+
+ChromaDB phù hợp với phạm vi prototype và đồ án vì dễ cài đặt, dễ chạy
+cục bộ, có khả năng persist dữ liệu xuống thư mục và tích hợp thuận tiện
+với LangChain. Trong hệ thống hiện tại, thư mục chroma\_db được sử dụng
+để lưu kho vector; khi dữ liệu thủ tục thay đổi, quản trị viên có thể
+build lại ChromaDB từ file JSON đã cập nhật.
+
+Tuy nhiên, nếu triển khai ở quy mô lớn, ChromaDB cục bộ cần được đánh
+giá lại về khả năng mở rộng, đồng thời và vận hành. Khi số lượng thủ
+tục, số lượng người dùng hoặc yêu cầu sẵn sàng tăng cao, cần xem xét các
+giải pháp như vector database triển khai dạng server, dịch vụ managed
+vector search, cơ chế replication, backup tự động, giám sát tài nguyên
+và phân tách môi trường cập nhật dữ liệu với môi trường phục vụ truy
+vấn.
+
+\section{Đánh giá chất lượng hệ thống
+RAG}
+
+Đánh giá hệ thống RAG cần xem xét cả khâu truy xuất và khâu sinh câu trả
+lời. Nếu truy xuất sai tài liệu, mô hình ngôn ngữ dù diễn đạt tốt vẫn có
+thể trả lời sai. Ngược lại, nếu truy xuất đúng nhưng prompt không chặt
+chẽ, mô hình vẫn có thể diễn giải thiếu hoặc thêm thông tin ngoài
+context. Vì vậy, việc đánh giá không nên chỉ dừng ở cảm nhận câu trả lời
+có tự nhiên hay không.
+
+Trong phạm vi đồ án, có thể xây dựng bộ câu hỏi thử nghiệm có đáp án
+tham chiếu từ dữ liệu nguồn. Mỗi câu hỏi được gắn nhóm thông tin cần
+kiểm tra như hồ sơ, thời hạn, phí, cơ quan thực hiện, căn cứ pháp lý
+hoặc câu hỏi tiếp nối. Khi chạy thử, cần ghi nhận chunk được truy xuất,
+câu trả lời cuối cùng và thời gian phản hồi để phân tích lỗi.
+
+\begin{longtable}[]{|
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2054}}|
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3728}}|
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4219}}|}
+\caption{Một số tiêu chí đánh giá hệ thống RAG}\\
+\hline
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Tiêu chí}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Ý nghĩa}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Cách áp dụng trong đồ án}
+\end{minipage} \\
+\hline
+\endfirsthead
+\continuedcaption{Một số tiêu chí đánh giá hệ thống RAG}
+\hline
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Tiêu chí}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Ý nghĩa}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Cách áp dụng trong đồ án}
+\end{minipage} \\
+\hline
+\endhead
+\hline
+\endlastfoot
+Độ chính xác truy xuất Top-k & Đánh giá các chunk liên quan có nằm trong
+nhóm kết quả đầu hay không & So sánh context truy xuất với đáp án chuẩn
+của từng câu hỏi. \\
+\hline
+Độ đúng của câu trả lời & Đánh giá câu trả lời có khớp dữ liệu nguồn
+không & Kiểm tra thủ công theo trường hồ sơ, thời hạn, phí, cơ quan. \\
+\hline
+Mức độ bám nguồn & Đánh giá mô hình có thêm thông tin ngoài context
+không & Đánh dấu các câu trả lời suy diễn hoặc không có trong dữ
+liệu. \\
+\hline
+Tỉ lệ không trả lời khi thiếu dữ liệu & Đánh giá khả năng từ chối đúng
+khi kho dữ liệu không có thông tin & Dùng câu hỏi ngoài phạm vi và kiểm
+tra phản hồi ``dữ liệu hiện tại không đề cập''. \\
+\hline
+Latency & Đánh giá thời gian phản hồi toàn tuyến & Đo thời gian từ lúc
+gửi câu hỏi đến lúc nhận câu trả lời. \\
+\hline
+Độ ổn định & Đánh giá khả năng fallback khi mô hình chính lỗi & Kiểm tra
+các trường hợp timeout hoặc model không phản hồi. \\
+\hline
+\end{longtable}
+
+Các tiêu chí trên giúp việc đánh giá có cơ sở hơn so với nhận xét chung
+chung. Trong bối cảnh hành chính công, hai tiêu chí cần ưu tiên là độ
+đúng theo dữ liệu nguồn và mức độ bám nguồn. Một câu trả lời ngắn nhưng
+đúng và có kiểm soát tốt hơn một câu trả lời dài, mạch lạc nhưng thêm
+thông tin không có trong thủ tục.
+
+\section{Công nghệ web và lưu trữ được áp
+dụng với hệ
+thống}
+
+Về phần mềm ứng dụng, hệ thống sử dụng kiến trúc tách biệt frontend và
+backend. Backend được xây dựng bằng Python và FastAPI để điều phối API,
+xác thực, truy xuất ChromaDB, gọi pipeline RAG và lưu lịch sử. Python
+phù hợp với đề tài vì có hệ sinh thái thư viện AI và xử lý dữ liệu phong
+phú.
+
+Frontend được xây dựng bằng React, TypeScript, Vite và Tailwind CSS.
+React giúp chia giao diện thành các component như ChatBox, Sidebar,
+Message, InputBox, LoginPage và AdminDashboard. TypeScript hỗ trợ kiểm
+soát kiểu dữ liệu, Vite giúp chạy thử nhanh, còn Tailwind CSS giúp xây
+dựng giao diện responsive cho cả máy tính và thiết bị di động.
+
+Firebase Authentication được dùng cho đăng nhập và cấp ID Token. Backend
+dùng Firebase Admin SDK để xác minh token trước khi xử lý các API cần
+bảo vệ. Firestore lưu dữ liệu vận hành như phiên chat, tin nhắn, danh
+sách admin, mã OTP và cấu hình backup. Như vậy, Firebase đảm nhận dữ
+liệu nghiệp vụ, còn ChromaDB đảm nhận dữ liệu tri thức phục vụ RAG.
+
+Tóm lại, phần công nghệ web trong đồ án giữ vai trò triển khai sản phẩm,
+còn phần cốt lõi quyết định chất lượng trả lời nằm ở dữ liệu, embedding,
+truy xuất, reranking, prompt và cách đánh giá RAG. Vì vậy, báo cáo tập
+trung nhiều hơn vào quy trình RAG và yêu cầu hành chính công thay vì mô
+tả quá dài các công nghệ giao diện.

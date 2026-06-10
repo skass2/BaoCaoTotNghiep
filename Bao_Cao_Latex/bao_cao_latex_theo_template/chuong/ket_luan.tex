@@ -1,0 +1,24 @@
+Đề tài đã nghiên cứu và xây dựng hệ thống chatbot hỗ trợ tra cứu TTHC
+cho tỉnh Lai Châu dựa trên kỹ thuật Retrieval-Augmented Generation. Hệ
+thống kết hợp dữ liệu TTHC đã chuẩn hóa, vector database, mô hình
+embedding, reranker và LLM để trả lời câu hỏi của người dùng theo hướng
+tự nhiên nhưng vẫn bám sát dữ liệu nguồn.
+
+Về mặt sản phẩm, đề tài đã triển khai backend FastAPI, frontend React,
+Firebase Authentication, Firestore lưu lịch sử chat, ChromaDB lưu
+vector, cơ chế intent nhanh, chuẩn hóa synonym, RAG pipeline, fallback
+LLM và dashboard quản trị. Các chức năng chính như hỏi đáp chatbot, quản
+lý phiên hội thoại, xác thực, quản lý tài liệu, đồng bộ vector database
+và thống kê hệ thống đã được hiện thực hóa.
+
+Về mặt ý nghĩa thực tiễn, hệ thống giúp giảm khó khăn của người dân khi
+tra cứu thông tin hành chính, hỗ trợ đặt câu hỏi bằng ngôn ngữ tự nhiên,
+giảm thời gian đọc văn bản dài và hỗ trợ cán bộ quản trị cập nhật dữ
+liệu thủ tục linh hoạt hơn.
+
+Trong tương lai, hệ thống có thể được phát triển theo các hướng: tích
+hợp trực tiếp với cổng dịch vụ công để tra cứu trạng thái hồ sơ; bổ sung
+chức năng hỏi đáp bằng giọng nói; xây dựng bộ đánh giá định lượng lớn
+cho từng nhóm thủ tục; tối ưu tốc độ inference bằng cloud AI; bổ sung
+chức năng trích dẫn nguồn chi tiết trong câu trả lời; và mở rộng sang
+nhiều tỉnh, thành phố khác.
